@@ -4,9 +4,11 @@ import { v4 as uuidv4 } from "uuid";
 import TextEditor from "../TextEditor/TextEditor";
 import { WebrtcProvider } from "y-webrtc";
 import "./Portal.scss";
+import axios from "axios";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
+const API_URL = `http://localhost:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -57,6 +59,14 @@ export default function Portal() {
     yElements.delete(id);
   };
 
+  const savePortal = (e) => {
+    e.preventDefault();
+    const yDocByte = Y.encodeStateAsUpdate(yDoc);
+    axios
+      .post(`API_URL/post`, { yDocByteArray: yDocByte })
+      .then((resp) => resp.data);
+  };
+
   let elements = {
     toAdd: [],
     inPortal: [],
@@ -103,6 +113,7 @@ export default function Portal() {
         <button onClick={renderElement}>Add Text</button>
         {elements.toAdd}
       </section>
+      <button onClick={savePortal}>Save Portal</button>
     </main>
   );
 }

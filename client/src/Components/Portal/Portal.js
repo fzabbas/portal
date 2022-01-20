@@ -52,11 +52,16 @@ export default function Portal() {
     });
   }, []);
 
+  const removeElement = (e, id) => {
+    e.preventDefault();
+    yElements.delete(id);
+  };
+
   let elements = {
     toAdd: [],
     inPortal: [],
   };
-  const yElements = yDoc.getMap("elements");
+  let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
     elements[el.container].push(
       <div
@@ -64,9 +69,15 @@ export default function Portal() {
         onDragStart={(e) => onDragStart(e, id)}
         draggable
         style={{ top: el.y_pos, left: el.x_pos }}
-        className={`draggable-el ${el.container}`}
+        className={`element ${el.container}`}
       >
-        <TextEditor id={id} yDoc={yDoc} />
+        <button
+          className="element__delete"
+          onClick={(e) => removeElement(e, id)}
+        >
+          x
+        </button>
+        <TextEditor id={id} yDoc={yDoc} forceUpdate={forceUpdate} />
       </div>
     );
   });

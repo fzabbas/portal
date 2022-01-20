@@ -17,11 +17,11 @@
   background-color: lemonchiffon;
 }
 
-.draggable-el {
-  padding: 0.25rem;
-  resize: both;
-  overflow: auto;
-}
+// .element {
+//   padding: 0.25rem;
+//   resize: both;
+//   overflow: auto;
+// }
 
 .toAdd {
   background-color: rgba(0, 0, 0, 0.1);
@@ -43,4 +43,23 @@
   top: 5rem;
   left: 3rem;
   background-color: lightyellow;
+}
+
+.element {
+  padding: 0.25rem;
+  resize: both;
+  min-width: 5rem;
+  width: fit-content;
+  position: relative;
+  &__delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: inherit;
+    font-size: 0.75rem;
+    border: none;
+    color: red;
+    padding: 0;
+    cursor: pointer;
+  }
 }

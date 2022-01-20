@@ -15,5 +15,6 @@ export default function TextEditor({ content, id, yDoc }) {
     ],
     content: content,
   });
+
   return <EditorContent editor={editor} />;
 }

@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "tiptap/starter-kit";
+import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
 
 export default function TextEditor({ content, id, yDoc }) {
@@ -13,7 +13,7 @@ export default function TextEditor({ content, id, yDoc }) {
         field: id,
       }),
     ],
-    content,
+    content: content,
   });
-  return <EditorContent editior={editor} />;
+  return <EditorContent editor={editor} />;
 }

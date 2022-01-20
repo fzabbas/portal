@@ -1,9 +1,10 @@
 import "./App.css";
+import Portal from "./Components/Portal/Portal";
 
 function App() {
   return (
     <div className="App">
-      <div>Hello hi how are you</div>
+      <Portal />
     </div>
   );
 }

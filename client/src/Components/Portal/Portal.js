@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import * as Y from "yjs";
 import { v4 as uuidv4 } from "uuid";
 import TextEditor from "../TextEditor/TextEditor";
+import { WebrtcProvider } from "y-webrtc";
+import "./Portal.scss";
 
 const yDoc = new Y.Doc();
-let provider = new WebrtcProvider("example-dxocument", yDoc);
+let provider = new WebrtcProvider("example-dxocument3", yDoc);
 
 export default function Portal() {
-  const [yDoc, setYDoc] = useState(yDoc);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  renderElement = () => {
+  const renderElement = () => {
     const id = uuidv4();
     const map = yDoc.getMap("elements"); // elements meta deta
     // setting elements meta data, more infor may have to be stored
@@ -18,33 +20,37 @@ export default function Portal() {
       x_pos: "",
       y_pos: "",
     });
-    setYDoc(yDoc);
+    // setYDoc(yDoc);
+    // let a = 1;
+    forceUpdate();
   };
 
-  onDragStart = (e, key) => {
+  const onDragStart = (e, key) => {
     e.dataTransfer.setData("id", key);
   };
 
-  onDragOver = (e) => {
+  const onDragOver = (e) => {
     e.preventDefault();
   };
 
-  onDrop = (e, section) => {
+  const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
-    let elementsMap = this.state.yDoc.getMap("elements");
+    let elementsMap = yDoc.getMap("elements");
     elementsMap.set(id, {
       container: section,
       x_pos: e.pageX - 32,
       y_pos: e.pageY - 80,
     });
-    setYDoc(yDoc);
+    forceUpdate();
+    // setYDoc(yDoc);
   };
-
   useEffect(() => {
+    console.log("use effect is run");
     yDoc.on("afterTransaction", () => {
-      setYDoc(yDoc);
+      forceUpdate();
+      // setYDoc(yDoc);
     });
-  });
+  }, []);
 
   let elements = {
     toAdd: [],
@@ -55,7 +61,7 @@ export default function Portal() {
     elements[el.container].push(
       <div
         key={id}
-        onDragStart={(e) => this.onDragStart(e, id)}
+        onDragStart={(e) => onDragStart(e, id)}
         draggable
         style={{ top: el.y_pos, left: el.x_pos }}
         className={`draggable-el ${el.container}`}
@@ -65,5 +71,27 @@ export default function Portal() {
     );
   });
 
-  return <></>;
+  return (
+    <main className="portal-page">
+      <section className="portal">
+        <h1>My Portal</h1>
+        <div
+          className="in-portal"
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, "inPortal")}
+        >
+          {elements.inPortal}
+        </div>
+      </section>
+      <section
+        className="add-elements"
+        onDragOver={onDragOver}
+        onDrop={(e) => onDrop(e, "toAdd")}
+      >
+        <h1>Things toAdd:</h1>
+        <button onClick={renderElement}>Add Text</button>
+        {elements.toAdd}
+      </section>
+    </main>
+  );
 }

@@ -1,0 +1,46 @@
+.portal-page {
+  display: flex;
+}
+
+.portal {
+  padding: 2rem;
+  background-color: lightseagreen;
+  flex-grow: 1;
+  height: 100vh;
+  position: relative;
+  // overflow: hidden;
+}
+
+.add-elements {
+  padding: 2rem;
+  z-index: 1;
+  background-color: lemonchiffon;
+}
+
+.draggable-el {
+  padding: 0.25rem;
+  resize: both;
+  overflow: auto;
+}
+
+.toAdd {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-height: 7rem;
+  max-width: 10rem;
+}
+
+.inPortal {
+  position: absolute;
+  max-height: 90%;
+  max-width: 90%;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+.in-portal {
+  height: 70vh;
+  width: 70vw;
+  top: 5rem;
+  left: 3rem;
+  background-color: lightyellow;
+}

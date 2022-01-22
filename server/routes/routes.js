@@ -39,4 +39,21 @@ router.get("/:key", (req, res) => {
     });
 });
 
+// havent tested yet, no way to test at the moment
+router.put("/:key", (req, res) => {
+  knex("portals")
+    .where({
+      password: req.params.key,
+    })
+    .update({
+      portal_doc: req.file.buffer,
+    })
+    .then((data) => {
+      res.send("Portal was updated");
+    })
+    .catch((err) => {
+      res.send("Wasnt able to update");
+    });
+});
+
 module.exports = router;

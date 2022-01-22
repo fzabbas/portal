@@ -59,12 +59,29 @@ export default function Portal() {
     yElements.delete(id);
   };
 
+  // const base64Encode = (arraybuffer) => {
+  //   return btoa(String.fromCharCode.apply(null, arraybuffer));
+  // };
+
   const savePortal = (e) => {
     e.preventDefault();
     const yDocByte = Y.encodeStateAsUpdate(yDoc);
+    const yDocBlob = new Blob(yDocByte);
+    console.log(yDocBlob.size);
+    let formData = new FormData();
+    formData.append("portalName", "portal sample name");
+    formData.append("password", "portal room name");
+    formData.append("portalDoc", yDocBlob);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
     axios
-      .post(`API_URL/post`, { yDocByteArray: yDocByte })
-      .then((resp) => resp.data);
+      .post(`${API_URL}/portal`, formData, config)
+      .then((resp) => console.log(resp));
   };
 
   let elements = {

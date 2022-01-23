@@ -5,6 +5,7 @@ import TextEditor from "../TextEditor/TextEditor";
 import { WebrtcProvider } from "y-webrtc";
 import "./Portal.scss";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -46,11 +47,21 @@ export default function Portal() {
     forceUpdate();
     // setYDoc(yDoc);
   };
+
+  let { key } = useParams();
   useEffect(() => {
     console.log("use effect is run");
+    axios
+      // other type could be arrayBuffer
+      .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
+      .then((resp) => {
+        resp.data.arrayBuffer().then((buffer) => {
+          const backendUint8 = new Uint8Array(buffer);
+          Y.applyUpdate(yDoc, backendUint8);
+        });
+      });
     yDoc.on("afterTransaction", () => {
       forceUpdate();
-      // setYDoc(yDoc);
     });
   }, []);
 
@@ -63,14 +74,12 @@ export default function Portal() {
   //   return btoa(String.fromCharCode.apply(null, arraybuffer));
   // };
 
-  const savePortal = (e) => {
-    e.preventDefault();
+  const makePortal = (name, password) => {
     const yDocByte = Y.encodeStateAsUpdate(yDoc);
-    const yDocBlob = new Blob(yDocByte);
-    console.log(yDocBlob.size);
+    const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
-    formData.append("portalName", "portal sample name");
-    formData.append("password", "portal room name");
+    formData.append("portalName", name);
+    formData.append("password", key);
     formData.append("portalDoc", yDocBlob);
 
     const config = {
@@ -78,10 +87,14 @@ export default function Portal() {
         "content-type": "multipart/form-data",
       },
     };
-
-    axios
+    return axios
       .post(`${API_URL}/portal`, formData, config)
       .then((resp) => console.log(resp));
+  };
+
+  const savePortal = (e) => {
+    e.preventDefault();
+    makePortal("portal sample name", "portalpassword");
   };
 
   let elements = {

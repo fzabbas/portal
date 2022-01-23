@@ -36,42 +36,42 @@ router.get("/:key", (req, res) => {
 });
 
 // havent tested yet, no way to test at the moment
-router.put("/:key", (req, res) => {
-  // let newYdoc = new Y.Doc();
-  req.file.buffer.arrayBuffer().then((frontendYdocBuffer) => {
-    const frontendUint8 = new Uint8Array(frontendYdocBuffer);
-    knex.transaction((t) => {
+router.put("/:key", upload.single("portalDoc"), (req, res) => {
+  knex
+    .transaction((t) => {
       return knex("portals")
+        .transacting(t)
         .where({
           password: req.params.key,
         })
         .select("portal_doc")
         .then((data) => {
-          data[0].portal_doc.arrayBuffer().then((databaseYDocBuffer) => {
-            const databaseUint8 = new Uint8Array(databaseYDocBuffer);
-
-            return knex("portals")
-              .where({
-                password: req.params.key,
-              })
-              .update({
-                portal_doc: Y.mergeUpdates([frontendUint8, databaseUint8]),
-              })
-              .then(t.commit)
-              .catch((err) => {
-                t.rollback();
-                throw err;
-              });
-          });
+          const mergedDoc = Y.mergeUpdates([
+            req.file.buffer,
+            data[0].portal_doc,
+          ]);
+          const mergedBuffer = Buffer.from(mergedDoc);
+          console.log(mergedBuffer instanceof Buffer);
+          return knex("portals")
+            .where({
+              password: req.params.key,
+            })
+            .update({
+              portal_doc: mergedBuffer,
+            });
         })
-        .then(() => {
-          res.send("Portal was updated");
-        })
-        .catch(() => {
-          res.send("Wasnt able to update");
+        .then(t.commit)
+        .catch((err) => {
+          t.rollback();
+          throw err;
         });
+    })
+    .then(() => {
+      res.send("portal was updates");
+    })
+    .catch(() => {
+      console.log("Portal was not updated");
     });
-  });
 });
 
 module.exports = router;

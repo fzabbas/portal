@@ -18,7 +18,7 @@ export default function Portal() {
 
   // const [ydoc, setYDoc] = useState(yDoc);
 
-  const renderElement = () => {
+  const renderText = () => {
     const id = uuidv4();
     const map = yDoc.getMap("elements"); // elements meta deta
     // setting elements meta data, more infor may have to be stored
@@ -30,8 +30,25 @@ export default function Portal() {
     forceUpdate();
   };
 
+  const renderImage = (e) => {
+    e.preventDefault();
+    const id = uuidv4();
+    const url = e.target.imageURL.value;
+    if (url) {
+      const map = yDoc.getMap("elements"); // elements meta deta
+      map.set(id, {
+        container: "toAdd",
+        x_pos: "",
+        y_pos: "",
+        src: url,
+      });
+      forceUpdate();
+    }
+  };
+
   const onDragStart = (e, key) => {
     e.dataTransfer.setData("id", key);
+    e.dataTransfer.setData("url", e.target.currentSrc);
   };
 
   const onDragOver = (e) => {
@@ -40,12 +57,13 @@ export default function Portal() {
 
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
+    let url = e.dataTransfer.getData("url");
     let elementsMap = yDoc.getMap("elements");
-    console.log("droppin into section:", section);
     elementsMap.set(id, {
       container: section,
       x_pos: e.pageX - 32,
       y_pos: e.pageY - 80,
+      src: url,
     });
     forceUpdate();
   };
@@ -61,10 +79,9 @@ export default function Portal() {
         "content-type": "multipart/form-data",
       },
     };
-    console.log("putting");
     return axios
       .put(`${API_URL}/portal/${key}`, formData, config)
-      .then((resp) => console.log(resp));
+      .then((resp) => resp);
   };
   const debouncedPut = useCallback(
     debounce((yDocToPut) => putToDb(yDocToPut), 2000),
@@ -72,7 +89,6 @@ export default function Portal() {
   );
 
   useEffect(() => {
-    console.log("use effect is run");
     axios
       // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
@@ -83,6 +99,7 @@ export default function Portal() {
         });
       })
       .catch(() => {
+        // TODO make portal name from title? maybe database doesnt even need it?
         makePortal("new portal", key);
         // console.log("A portal with that key does not exist");
       });
@@ -136,7 +153,11 @@ export default function Portal() {
         >
           x
         </button>
-        <TextEditor id={id} yDoc={yDoc} forceUpdate={forceUpdate} />
+        {el.src ? (
+          <img className="element__image" src={el.src} alt={el.src} />
+        ) : (
+          <TextEditor id={id} yDoc={yDoc} forceupdate={forceUpdate} />
+        )}
       </div>
     );
   });
@@ -162,8 +183,11 @@ export default function Portal() {
         onDrop={(e) => onDrop(e, "toAdd")}
       >
         <h1>Things toAdd:</h1>
-
-        <button onClick={renderElement}>Add Text</button>
+        <form onSubmit={renderImage}>
+          <input type="text" name="imageURL" />
+          <button>Add Image Url</button>
+        </form>
+        <button onClick={renderText}>Add Text</button>
         {elements.toAdd}
       </section>
     </main>

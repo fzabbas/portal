@@ -1,15 +1,22 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { WebrtcProvider } from "y-webrtc";
+import debounce from "lodash.debounce";
+import axios from "axios";
 import * as Y from "yjs";
 import { v4 as uuidv4 } from "uuid";
 import TextEditor from "../TextEditor/TextEditor";
-import { WebrtcProvider } from "y-webrtc";
 import "./Portal.scss";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
+const API_URL = `http://localhost:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
+  let { key } = useParams();
+
+  // const [ydoc, setYDoc] = useState(yDoc);
 
   const renderElement = () => {
     const id = uuidv4();
@@ -20,8 +27,6 @@ export default function Portal() {
       x_pos: "",
       y_pos: "",
     });
-    // setYDoc(yDoc);
-    // let a = 1;
     forceUpdate();
   };
 
@@ -36,25 +41,77 @@ export default function Portal() {
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.getMap("elements");
+    console.log("droppin into section:", section);
     elementsMap.set(id, {
       container: section,
       x_pos: e.pageX - 32,
       y_pos: e.pageY - 80,
     });
     forceUpdate();
-    // setYDoc(yDoc);
   };
+
+  const putToDb = (yDocToPut) => {
+    const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
+    const yDocBlob = new Blob([yDocByte]);
+    let formData = new FormData();
+    formData.append("password", key);
+    formData.append("portalDoc", yDocBlob);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    console.log("putting");
+    return axios
+      .put(`${API_URL}/portal/${key}`, formData, config)
+      .then((resp) => console.log(resp));
+  };
+  const debouncedPut = useCallback(
+    debounce((yDocToPut) => putToDb(yDocToPut), 2000),
+    []
+  );
+
   useEffect(() => {
     console.log("use effect is run");
+    axios
+      // other type could be arrayBuffer
+      .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
+      .then((resp) => {
+        resp.data.arrayBuffer().then((buffer) => {
+          const backendUint8 = new Uint8Array(buffer);
+          Y.applyUpdate(yDoc, backendUint8);
+        });
+      })
+      .catch(() => {
+        makePortal("new portal", key);
+        // console.log("A portal with that key does not exist");
+      });
     yDoc.on("afterTransaction", () => {
+      debouncedPut(yDoc);
       forceUpdate();
-      // setYDoc(yDoc);
     });
   }, []);
 
   const removeElement = (e, id) => {
     e.preventDefault();
     yElements.delete(id);
+  };
+
+  const makePortal = (name) => {
+    const yDocByte = Y.encodeStateAsUpdate(yDoc);
+    const yDocBlob = new Blob([yDocByte]);
+    let formData = new FormData();
+    formData.append("portalName", name);
+    formData.append("password", key);
+    formData.append("portalDoc", yDocBlob);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+    return axios
+      .post(`${API_URL}/portal`, formData, config)
+      .then((resp) => console.log(resp));
   };
 
   let elements = {
@@ -68,7 +125,9 @@ export default function Portal() {
         key={id}
         onDragStart={(e) => onDragStart(e, id)}
         draggable
-        style={{ top: el.y_pos, left: el.x_pos }}
+        style={
+          el.container === "toAdd" ? {} : { top: el.y_pos, left: el.x_pos }
+        }
         className={`element ${el.container}`}
       >
         <button
@@ -85,7 +144,10 @@ export default function Portal() {
   return (
     <main className="portal-page">
       <section className="portal">
-        <h1>My Portal</h1>
+        <header className="portal__header">
+          <h1>Portal</h1>
+          <TextEditor id={key} yDoc={yDoc} placehoderText={"Add title"} />
+        </header>
         <div
           className="in-portal"
           onDragOver={onDragOver}
@@ -100,6 +162,7 @@ export default function Portal() {
         onDrop={(e) => onDrop(e, "toAdd")}
       >
         <h1>Things toAdd:</h1>
+
         <button onClick={renderElement}>Add Text</button>
         {elements.toAdd}
       </section>

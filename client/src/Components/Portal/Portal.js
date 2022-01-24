@@ -48,7 +48,6 @@ export default function Portal() {
 
   const onDragStart = (e, key) => {
     e.dataTransfer.setData("id", key);
-    e.dataTransfer.setData("url", e.target.currentSrc);
   };
 
   const onDragOver = (e) => {
@@ -57,18 +56,19 @@ export default function Portal() {
 
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
-    let url = e.dataTransfer.getData("url");
     let elementsMap = yDoc.getMap("elements");
+    const url = elementsMap.get(id).src;
     elementsMap.set(id, {
       container: section,
-      x_pos: e.pageX - 32,
-      y_pos: e.pageY - 80,
+      x_pos: e.pageX,
+      y_pos: e.pageY,
       src: url,
     });
     forceUpdate();
   };
 
   const putToDb = (yDocToPut) => {
+    console.log("putting");
     const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();

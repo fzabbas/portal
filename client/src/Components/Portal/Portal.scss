@@ -48,9 +48,10 @@
 .element {
   padding: 0.25rem;
   resize: both;
-  min-width: 5rem;
-  width: fit-content;
-  position: relative;
+  overflow: auto;
+  width: 10rem;
+  // width: fit-content;
+  position: absolute;
   &__delete {
     position: absolute;
     top: 0;
@@ -61,5 +62,8 @@
     color: red;
     padding: 0;
     cursor: pointer;
+  }
+  &__image {
+    width: 100%;
   }
 }

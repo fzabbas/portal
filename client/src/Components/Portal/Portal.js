@@ -82,8 +82,9 @@ export default function Portal() {
           Y.applyUpdate(yDoc, backendUint8);
         });
       })
-      .catch((_err) => {
-        console.log("A portal with that key does not exist");
+      .catch(() => {
+        makePortal("new portal", key);
+        // console.log("A portal with that key does not exist");
       });
     yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
@@ -96,7 +97,7 @@ export default function Portal() {
     yElements.delete(id);
   };
 
-  const makePortal = (name, password) => {
+  const makePortal = (name) => {
     const yDocByte = Y.encodeStateAsUpdate(yDoc);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
@@ -111,11 +112,6 @@ export default function Portal() {
     return axios
       .post(`${API_URL}/portal`, formData, config)
       .then((resp) => console.log(resp));
-  };
-
-  const savePortal = (e) => {
-    e.preventDefault();
-    makePortal("portal sample name", "portalpassword");
   };
 
   let elements = {
@@ -148,7 +144,10 @@ export default function Portal() {
   return (
     <main className="portal-page">
       <section className="portal">
-        <h1>My Portal</h1>
+        <header className="portal__header">
+          <h1>Portal</h1>
+          <TextEditor id={key} yDoc={yDoc} placehoderText={"Add title"} />
+        </header>
         <div
           className="in-portal"
           onDragOver={onDragOver}
@@ -167,7 +166,6 @@ export default function Portal() {
         <button onClick={renderElement}>Add Text</button>
         {elements.toAdd}
       </section>
-      <button onClick={savePortal}>Save Portal</button>
     </main>
   );
 }

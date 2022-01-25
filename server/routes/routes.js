@@ -51,7 +51,6 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
             data[0].portal_doc,
           ]);
           const mergedBuffer = Buffer.from(mergedDoc);
-          console.log(mergedBuffer instanceof Buffer);
           return knex("portals")
             .where({
               password: req.params.key,

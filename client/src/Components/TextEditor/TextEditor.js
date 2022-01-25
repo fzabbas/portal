@@ -19,7 +19,22 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
       }),
     ],
     content: content,
+    // editable: false,
   });
 
-  return <EditorContent editor={editor} />;
+  const handleDoubleClick = (e) => {
+    e.preventDefault();
+    editor.setEditable(true);
+  };
+
+  const removeEditable = (e) => {
+    editor.setEditable(false);
+  };
+  return (
+    <EditorContent
+      onBlur={removeEditable}
+      onDoubleClick={handleDoubleClick}
+      editor={editor}
+    />
+  );
 }

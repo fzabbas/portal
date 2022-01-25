@@ -47,6 +47,8 @@ export default function Portal() {
   };
 
   const onDragStart = (e, key) => {
+    e.dataTransfer.setData("startX", e.pageX);
+    e.dataTransfer.setData("startY", e.pageY);
     e.dataTransfer.setData("id", key);
   };
 
@@ -55,13 +57,16 @@ export default function Portal() {
   };
 
   const onDrop = (e, section) => {
+    console.log(e.pageX, e.pageY);
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.getMap("elements");
     const url = elementsMap.get(id).src;
+    const initialX = elementsMap.get(id).x_pos;
+    const initialY = elementsMap.get(id).y_pos;
     elementsMap.set(id, {
       container: section,
-      x_pos: e.pageX,
-      y_pos: e.pageY,
+      x_pos: initialX + (e.pageX - e.dataTransfer.getData("startX")),
+      y_pos: initialY + (e.pageY - e.dataTransfer.getData("startY")),
       src: url,
     });
     forceUpdate();

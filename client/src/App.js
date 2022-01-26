@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import Portal from "./Components/Portal/Portal";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 

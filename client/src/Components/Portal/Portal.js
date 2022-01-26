@@ -178,11 +178,16 @@ export default function Portal() {
 
   return (
     <main className="portal-page">
+      <header className="portal__header">
+        <h1 className="portal__heading">Portal /</h1>
+        <TextEditor
+          className="portal__subheading"
+          id={key}
+          yDoc={yDoc}
+          placehoderText={"Add title"}
+        />
+      </header>
       <section className="portal">
-        <header className="portal__header">
-          <h1>Portal</h1>
-          <TextEditor id={key} yDoc={yDoc} placehoderText={"Add title"} />
-        </header>
         <div
           className="in-portal"
           onDragOver={onDragOver}
@@ -196,7 +201,7 @@ export default function Portal() {
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, "toAdd")}
       >
-        <h1>Things toAdd:</h1>
+        <h1>Sideboard</h1>
         <form onSubmit={renderImage}>
           <input type="text" name="imageURL" />
           <button>Add Image Url</button>

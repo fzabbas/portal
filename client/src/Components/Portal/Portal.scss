@@ -30,17 +30,33 @@
   }
 }
 
-.add-elements {
+.sideboard {
   position: absolute;
   top: 6.5rem;
   // height: 80%;
   right: 0;
-  padding: 2rem;
+  padding: 1.5rem;
   margin: 1rem;
   z-index: 2;
   background-color: $secondary-light-transparent;
   border-radius: $border-radius;
   box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__heading {
+    margin-right: 2rem;
+  }
+  &__add-image-form {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .toAdd {
@@ -86,4 +102,11 @@
     width: 100%;
     pointer-events: none;
   }
+}
+
+.button {
+  width: fit-content;
+  padding: 0;
+  border: none;
+  padding-left: 0.5rem;
 }

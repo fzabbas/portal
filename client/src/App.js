@@ -10,9 +10,6 @@ function App() {
         <Route path="/portal/:key" component={Portal} />
       </Switch>
     </BrowserRouter>
-    // <div className="App">
-    //   <Portal />
-    // </div>
   );
 }
 

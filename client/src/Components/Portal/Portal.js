@@ -7,6 +7,8 @@ import * as Y from "yjs";
 import { v4 as uuidv4 } from "uuid";
 import TextEditor from "../TextEditor/TextEditor";
 import "./Portal.scss";
+import textIcon from "../../assets/icons/text.svg";
+import imageIcon from "../../assets/icons/image.svg";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -44,6 +46,10 @@ export default function Portal() {
       });
       forceUpdate();
     }
+  };
+
+  const handleImage = (e) => {
+    console.log("clicked");
   };
 
   const onDragStart = (e, key) => {
@@ -197,16 +203,25 @@ export default function Portal() {
         </div>
       </section>
       <section
-        className="add-elements"
+        className="sideboard"
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, "toAdd")}
       >
-        <h1>Sideboard</h1>
-        <form onSubmit={renderImage}>
+        <div className="sideboard__header">
+          <h2 className="sideboard__heading">Sideboard</h2>
+          <button className="button" onClick={renderText}>
+            <img src={textIcon} alt="text-icon" />
+          </button>
+          <button className="button" onClick={handleImage}>
+            <img src={imageIcon} alt="image-icon" />
+          </button>
+        </div>
+        <form className="sideboard__add-image-form" onSubmit={renderImage}>
           <input type="text" name="imageURL" />
-          <button>Add Image Url</button>
+          <button className="button" onClick={handleImage}>
+            Add image
+          </button>
         </form>
-        <button onClick={renderText}>Add Text</button>
         {elements.toAdd}
       </section>
     </main>

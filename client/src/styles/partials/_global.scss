@@ -8,6 +8,12 @@
   box-sizing: border-box;
 }
 
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
 p {
   margin: 0;
 }
@@ -18,7 +24,7 @@ a {
 
 /* general body styles */
 body {
-  font-family: sans-serif;
+  font-family: "Source Sans Pro";
   margin: 0;
   background-color: $primary-background;
 }

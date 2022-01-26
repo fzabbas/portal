@@ -9,6 +9,7 @@ import TextEditor from "../TextEditor/TextEditor";
 import "./Portal.scss";
 import textIcon from "../../assets/icons/text.svg";
 import imageIcon from "../../assets/icons/image.svg";
+import addIcon from "../../assets/icons/add-square.svg";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -17,6 +18,7 @@ const API_URL = `http://localhost:8080`;
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
+  const [toAddImage, setToAddImage] = useState(false);
 
   // const [ydoc, setYDoc] = useState(yDoc);
 
@@ -46,10 +48,11 @@ export default function Portal() {
       });
       forceUpdate();
     }
+    setToAddImage(false);
   };
 
   const handleImage = (e) => {
-    console.log("clicked");
+    setToAddImage(!toAddImage);
   };
 
   const onDragStart = (e, key) => {
@@ -216,12 +219,21 @@ export default function Portal() {
             <img src={imageIcon} alt="image-icon" />
           </button>
         </div>
-        <form className="sideboard__add-image-form" onSubmit={renderImage}>
-          <input type="text" name="imageURL" />
-          <button className="button" onClick={handleImage}>
-            Add image
-          </button>
-        </form>
+        {toAddImage ? (
+          <form className="sideboard__add-image-form" onSubmit={renderImage}>
+            <input
+              className="sideboard__add-image-input"
+              type="text"
+              name="imageURL"
+              placeholder="Add image URL..."
+            />
+            <button className="button">
+              <img src={addIcon} alt="add-icon" />
+            </button>
+          </form>
+        ) : (
+          <></>
+        )}
         {elements.toAdd}
       </section>
     </main>

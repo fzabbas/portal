@@ -48,11 +48,9 @@
   &__header {
     display: flex;
     justify-content: space-between;
+    align-items: end;
   }
 
-  &__heading {
-    margin-right: 2rem;
-  }
   &__add-image-form {
     display: flex;
   }
@@ -72,7 +70,7 @@
   position: relative;
   max-height: 7rem;
 
-  max-width: 10rem;
+  max-width: 11rem;
 }
 
 .inPortal {
@@ -93,7 +91,7 @@
   padding: 0.25rem;
   resize: both;
   overflow: auto;
-  width: 10rem;
+  width: 11rem;
   // width: fit-content;
   &__delete {
     position: absolute;

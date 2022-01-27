@@ -212,12 +212,14 @@ export default function Portal() {
       >
         <div className="sideboard__header">
           <h2 className="sideboard__heading">Sideboard</h2>
-          <button className="button" onClick={renderText}>
-            <img src={textIcon} alt="text-icon" />
-          </button>
-          <button className="button" onClick={handleImage}>
-            <img src={imageIcon} alt="image-icon" />
-          </button>
+          <div>
+            <button className="button" onClick={renderText}>
+              <img src={textIcon} alt="text-icon" />
+            </button>
+            <button className="button" onClick={handleImage}>
+              <img src={imageIcon} alt="image-icon" />
+            </button>
+          </div>
         </div>
         {toAddImage ? (
           <form className="sideboard__add-image-form" onSubmit={renderImage}>

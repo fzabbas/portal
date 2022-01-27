@@ -10,6 +10,7 @@ import "./Portal.scss";
 import textIcon from "../../assets/icons/text.svg";
 import imageIcon from "../../assets/icons/image.svg";
 import addIcon from "../../assets/icons/add-square.svg";
+import deleteIcon from "../../assets/icons/delete.svg";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -174,7 +175,11 @@ export default function Portal() {
           className="element__delete"
           onClick={(e) => removeElement(e, id)}
         >
-          x
+          <img
+            className="element__delete-icon"
+            src={deleteIcon}
+            alt="delete icon"
+          />
         </button>
         {el.src ? (
           <img className="element__image" src={el.src} alt={el.src} />

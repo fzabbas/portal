@@ -11,9 +11,20 @@
   pointer-events: none;
 }
 
+.ProseMirror-focused {
+  outline: none;
+  border: 1px solid $primary-dark;
+  border-radius: $border-radius;
+}
+
+.ProseMirror {
+  padding: 0.25rem;
+}
+
 .menu {
   display: flex;
   gap: 2px;
+  padding-top: 0.5rem;
   &__btn {
     @include button-icon;
     filter: invert(64%) sepia(28%) saturate(216%) hue-rotate(115deg)

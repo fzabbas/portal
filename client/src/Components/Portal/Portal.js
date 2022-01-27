@@ -1,14 +1,13 @@
-import { useState, useEffect, useReducer, useCallback } from "react";
+import { useEffect, useReducer, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
 import debounce from "lodash.debounce";
 import axios from "axios";
 import * as Y from "yjs";
-import { v4 as uuidv4 } from "uuid";
 import TextEditor from "../TextEditor/TextEditor";
 import "./Portal.scss";
-import textIcon from "../../assets/icons/text.svg";
-import imageIcon from "../../assets/icons/image.svg";
+import deleteIcon from "../../assets/icons/delete.svg";
+import Sideboard from "../Sideboard/Sideboard";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -17,40 +16,6 @@ const API_URL = `http://localhost:8080`;
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
-
-  // const [ydoc, setYDoc] = useState(yDoc);
-
-  const renderText = () => {
-    const id = uuidv4();
-    const map = yDoc.getMap("elements"); // elements meta deta
-    // setting elements meta data, more infor may have to be stored
-    map.set(id, {
-      container: "toAdd",
-      x_pos: "",
-      y_pos: "",
-    });
-    forceUpdate();
-  };
-
-  const renderImage = (e) => {
-    e.preventDefault();
-    const id = uuidv4();
-    const url = e.target.imageURL.value;
-    if (url) {
-      const map = yDoc.getMap("elements"); // elements meta deta
-      map.set(id, {
-        container: "toAdd",
-        x_pos: "",
-        y_pos: "",
-        src: url,
-      });
-      forceUpdate();
-    }
-  };
-
-  const handleImage = (e) => {
-    console.log("clicked");
-  };
 
   const onDragStart = (e, key) => {
     e.dataTransfer.setData("startX", e.pageX);
@@ -171,7 +136,11 @@ export default function Portal() {
           className="element__delete"
           onClick={(e) => removeElement(e, id)}
         >
-          x
+          <img
+            className="element__delete-icon"
+            src={deleteIcon}
+            alt="delete icon"
+          />
         </button>
         {el.src ? (
           <img className="element__image" src={el.src} alt={el.src} />
@@ -202,28 +171,12 @@ export default function Portal() {
           {elements.inPortal}
         </div>
       </section>
-      <section
-        className="sideboard"
+      <Sideboard
         onDragOver={onDragOver}
-        onDrop={(e) => onDrop(e, "toAdd")}
-      >
-        <div className="sideboard__header">
-          <h2 className="sideboard__heading">Sideboard</h2>
-          <button className="button" onClick={renderText}>
-            <img src={textIcon} alt="text-icon" />
-          </button>
-          <button className="button" onClick={handleImage}>
-            <img src={imageIcon} alt="image-icon" />
-          </button>
-        </div>
-        <form className="sideboard__add-image-form" onSubmit={renderImage}>
-          <input type="text" name="imageURL" />
-          <button className="button" onClick={handleImage}>
-            Add image
-          </button>
-        </form>
-        {elements.toAdd}
-      </section>
+        onDrop={onDrop}
+        elements={elements}
+        yDoc={yDoc}
+      />
     </main>
   );
 }

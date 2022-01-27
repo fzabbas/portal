@@ -27,6 +27,7 @@ import highlighterIcon from "../../assets/icons/highlighter.svg";
 
 export default function TextEditor({ content, id, yDoc, placehoderText }) {
   const [menuHover, setMenuHover] = useState(false);
+  const [colorHover, setColorHover] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -71,7 +72,7 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
         onClick={handleClick}
         editor={editor}
       />
-      {editor && (editor.isFocused || menuHover) ? (
+      {editor && (editor.isFocused || menuHover || colorHover) ? (
         // {editor ? (
         <div
           className="menu"
@@ -79,8 +80,10 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
           onMouseLeave={() => setMenuHover(false)}
         >
           <input
+            onFocus={() => setColorHover(true)}
+            onBlur={() => setColorHover(false)}
             type="color"
-            className="menu__btn--color icon icon--color"
+            className="icon icon--color"
             onInput={(event) =>
               editor.chain().focus().setColor(event.target.value).run()
             }

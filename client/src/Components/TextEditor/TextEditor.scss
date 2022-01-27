@@ -19,10 +19,6 @@
     filter: invert(64%) sepia(28%) saturate(216%) hue-rotate(115deg)
       brightness(93%) contrast(89%);
 
-    &--color {
-      padding: 0;
-    }
-
     &--active {
       @include button-icon;
     }
@@ -41,6 +37,8 @@
   }
 
   &--color {
+    padding: 0;
+
     background-color: inherit;
     border-color: $primary-dark;
   }

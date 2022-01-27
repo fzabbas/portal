@@ -20,7 +20,13 @@ import listIcon from "../../assets/icons/list-unordered.svg";
 import codeIcon from "../../assets/icons/code.svg";
 import highlighterIcon from "../../assets/icons/highlighter.svg";
 
-export default function TextEditor({ content, id, yDoc, placehoderText }) {
+export default function TextEditor({
+  content,
+  id,
+  yDoc,
+  placehoderText,
+  className,
+}) {
   const [menuHover, setMenuHover] = useState(false);
   const [colorHover, setColorHover] = useState(false);
 
@@ -61,7 +67,7 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
   };
 
   return (
-    <div>
+    <div className={className}>
       <EditorContent
         onBlur={removeEditable}
         onClick={handleClick}
@@ -78,11 +84,12 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
             onFocus={() => setColorHover(true)}
             onBlur={() => setColorHover(false)}
             type="color"
+            // style={{ color: "#000000" }}
             className="icon icon--color"
             onInput={(event) =>
               editor.chain().focus().setColor(event.target.value).run()
             }
-            value={editor.getAttributes("textStyle").color}
+            value={editor.getAttributes("textStyle").color || "#000000"}
           />
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}

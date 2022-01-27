@@ -200,6 +200,8 @@ export default function Portal() {
           yDoc={yDoc}
           placehoderText={"Add title"}
         />
+        {/* <div className="portal__subheading">
+        </div> */}
       </header>
       <section className="portal">
         <div

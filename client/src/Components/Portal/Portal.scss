@@ -1,16 +1,12 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
-.portal-page {
-}
-
 .portal {
   flex-grow: 1;
   height: 100vh;
   position: relative;
   width: 100%; // overflow: hidden;
   &__header {
-    // position: absolute;
     margin: 1rem;
     padding: 1rem;
     z-index: 1;
@@ -27,6 +23,8 @@
   &__subheading {
     // subheading font-size doesnt work here
     font-size: 2.25rem;
+    display: flex;
+    align-items: flex-start;
   }
 }
 

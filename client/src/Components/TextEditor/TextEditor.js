@@ -6,11 +6,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import "./TextEditor.scss";
 
 // tiptap extensions for menu
-import { Bold } from "@tiptap/extension-bold";
-import { Italic } from "@tiptap/extension-italic";
-import Heading from "@tiptap/extension-heading";
-import ListItem from "@tiptap/extension-list-item";
-import CodeBlock from "@tiptap/extension-code-block";
 import Highlight from "@tiptap/extension-highlight";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
@@ -33,6 +28,12 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
     extensions: [
       StarterKit.configure({
         history: false,
+        heading: {
+          levels: [1, 2, 3],
+        },
+        bold: true,
+        italic: true,
+        listItem: true,
       }),
       Collaboration.configure({
         document: yDoc,
@@ -41,12 +42,6 @@ export default function TextEditor({ content, id, yDoc, placehoderText }) {
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",
       }),
-      Bold,
-      Italic,
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-      ListItem,
       Highlight,
       TextStyle,
       Color,

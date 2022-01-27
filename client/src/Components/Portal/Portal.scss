@@ -113,9 +113,5 @@
 }
 
 .button {
-  background-color: inherit;
-  width: fit-content;
-  padding: 0;
-  border: none;
-  padding-left: 0.5rem;
+  @include button-icon;
 }

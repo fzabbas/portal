@@ -1,0 +1,8 @@
+@use "./variables" as *;
+
+@mixin button-icon {
+  background-color: inherit;
+  width: fit-content;
+  padding: 0;
+  border: none;
+}

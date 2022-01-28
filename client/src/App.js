@@ -1,12 +1,13 @@
 import "./App.scss";
-import Portal from "./Components/Portal/Portal";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
+import Portal from "./Components/Portal/Portal";
+import LandingPage from "./Pages/LandingPage/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Portal} exact />
+        <Route path="/" component={LandingPage} exact />
         <Route path="/portal/:key" component={Portal} />
       </Switch>
     </BrowserRouter>

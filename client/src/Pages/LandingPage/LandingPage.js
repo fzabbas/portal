@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Redirect, useHistory, Link } from "react-router-dom";
 import "./LandingPage.scss";
 
-const API_URL = `http://localhost:8080`;
+const API_URL = `http://${location.hostname}:8080`;
 
 export default function LandingPage() {
   const [redirect, setRedirect] = useState(null);

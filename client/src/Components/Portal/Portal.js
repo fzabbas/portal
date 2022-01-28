@@ -11,7 +11,7 @@ import YElement from "../YElement/YElement";
 
 // const yDoc = new Y.Doc();
 // let provider = new WebrtcProvider("example-document15", yDoc);
-const API_URL = `http://localhost:8080`;
+const API_URL = `http://${location.hostname}:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);

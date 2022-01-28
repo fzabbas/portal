@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useCallback } from "react";
-import { useResizeDetector } from "react-resize-detector";
 import { useParams } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
 import debounce from "lodash.debounce";
@@ -7,8 +6,8 @@ import axios from "axios";
 import * as Y from "yjs";
 import TextEditor from "../TextEditor/TextEditor";
 import "./Portal.scss";
-import deleteIcon from "../../assets/icons/delete.svg";
 import Sideboard from "../Sideboard/Sideboard";
+import YElement from "../YElement/YElement";
 
 const yDoc = new Y.Doc();
 let provider = new WebrtcProvider("example-dxocument3", yDoc);
@@ -17,12 +16,6 @@ const API_URL = `http://localhost:8080`;
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
-
-  const onDragStart = (e, key) => {
-    e.dataTransfer.setData("startX", e.pageX);
-    e.dataTransfer.setData("startY", e.pageY);
-    e.dataTransfer.setData("id", key);
-  };
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -127,38 +120,16 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
+    console.log(el);
     elements[el.get("container")].push(
-      <div
+      <YElement
         key={id}
-        onDragStart={(e) => onDragStart(e, id)}
-        draggable
-        style={
-          el.get("container") === "toAdd"
-            ? {}
-            : { top: el.get("y_pos"), left: el.get("x_pos") }
-        }
-        className={`element ${el.get("container")}`}
-      >
-        <button
-          className="element__delete"
-          onClick={(e) => removeElement(e, id)}
-        >
-          <img
-            className="element__delete-icon"
-            src={deleteIcon}
-            alt="delete icon"
-          />
-        </button>
-        {el.get("src") ? (
-          <img
-            className="element__image"
-            src={el.get("src")}
-            alt={el.get("src")}
-          />
-        ) : (
-          <TextEditor id={id} yDoc={yDoc} forceupdate={forceUpdate} />
-        )}
-      </div>
+        id={id}
+        el={el}
+        removeElement={removeElement}
+        yDoc={yDoc}
+        forceUpdate={forceUpdate}
+      />
     );
   });
 

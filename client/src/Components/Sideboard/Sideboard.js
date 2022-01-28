@@ -1,5 +1,7 @@
 import { useState, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
+import * as Y from "yjs";
+
 import textIcon from "../../assets/icons/text.svg";
 import imageIcon from "../../assets/icons/image.svg";
 import addIcon from "../../assets/icons/add-square.svg";
@@ -17,11 +19,17 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     const id = uuidv4();
     const map = yDoc.getMap("elements"); // elements meta deta
     // setting elements meta data, more infor may have to be stored
-    map.set(id, {
-      container: "toAdd",
-      x_pos: "",
-      y_pos: "",
-    });
+    const yMapNested = new Y.Map();
+    map.set(id, yMapNested);
+    yMapNested.set("container", "toAdd");
+    yMapNested.set("x_pos", "");
+    yMapNested.set("y_pos", "");
+
+    // map.set(id, {
+    //   container: "toAdd",
+    //   x_pos: "",
+    //   y_pos: "",
+    // });
     forceUpdate();
   };
 
@@ -31,12 +39,18 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     const url = e.target.imageURL.value;
     if (url) {
       const map = yDoc.getMap("elements"); // elements meta deta
-      map.set(id, {
-        container: "toAdd",
-        x_pos: "",
-        y_pos: "",
-        src: url,
-      });
+      const yMapNested = new Y.Map();
+      map.set(id, yMapNested);
+      yMapNested.set("container", "toAdd");
+      yMapNested.set("x_pos", "");
+      yMapNested.set("y_pos", "");
+      yMapNested.set("src", url);
+      // map.set(id, {
+      //   container: "toAdd",
+      //   x_pos: "",
+      //   y_pos: "",
+      //   src: url,
+      // });
       forceUpdate();
     }
     setToAddImage(false);

@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useCallback } from "react";
+import { useResizeDetector } from "react-resize-detector";
 import { useParams } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
 import debounce from "lodash.debounce";
@@ -29,25 +30,28 @@ export default function Portal() {
 
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
-    let elementsMap = yDoc.getMap("elements");
-    const url = elementsMap.get(id).src;
-    let initialX = elementsMap.get(id).x_pos;
-    let initialY = elementsMap.get(id).y_pos;
+    let elementsMap = yDoc.get("elements");
+    let nestedElementsMap = elementsMap.get(id);
+    const url = nestedElementsMap.get("src");
+    let initialX = nestedElementsMap.get("x_pos");
+    let initialY = nestedElementsMap.get("y_pos");
     const x = initialX + (e.pageX - e.dataTransfer.getData("startX"));
     if (typeof initialX === "string") {
-      elementsMap.set(id, {
-        container: section,
-        x_pos: e.pageX,
-        y_pos: e.pageY,
-        src: url,
-      });
+      nestedElementsMap.set("container", section);
+      nestedElementsMap.set("x_pos", e.pageX);
+      nestedElementsMap.set("y_pos", e.pageY);
+      nestedElementsMap.set("src", url);
     } else {
-      elementsMap.set(id, {
-        container: section,
-        x_pos: initialX + (e.pageX - e.dataTransfer.getData("startX")),
-        y_pos: initialY + (e.pageY - e.dataTransfer.getData("startY")),
-        src: url,
-      });
+      nestedElementsMap.set("container", section);
+      nestedElementsMap.set(
+        "x_pos",
+        initialX + (e.pageX - e.dataTransfer.getData("startX"))
+      );
+      nestedElementsMap.set(
+        "y_pos",
+        initialY + (e.pageY - e.dataTransfer.getData("startY"))
+      );
+      nestedElementsMap.set("src", url);
     }
     forceUpdate();
   };
@@ -90,6 +94,7 @@ export default function Portal() {
       });
     yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
+      // TODO: comment out for putting
       forceUpdate();
     });
   }, []);
@@ -122,15 +127,17 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
-    elements[el.container].push(
+    elements[el.get("container")].push(
       <div
         key={id}
         onDragStart={(e) => onDragStart(e, id)}
         draggable
         style={
-          el.container === "toAdd" ? {} : { top: el.y_pos, left: el.x_pos }
+          el.get("container") === "toAdd"
+            ? {}
+            : { top: el.get("y_pos"), left: el.get("x_pos") }
         }
-        className={`element ${el.container}`}
+        className={`element ${el.get("container")}`}
       >
         <button
           className="element__delete"
@@ -142,8 +149,12 @@ export default function Portal() {
             alt="delete icon"
           />
         </button>
-        {el.src ? (
-          <img className="element__image" src={el.src} alt={el.src} />
+        {el.get("src") ? (
+          <img
+            className="element__image"
+            src={el.get("src")}
+            alt={el.get("src")}
+          />
         ) : (
           <TextEditor id={id} yDoc={yDoc} forceupdate={forceUpdate} />
         )}

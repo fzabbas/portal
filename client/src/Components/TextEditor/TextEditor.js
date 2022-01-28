@@ -43,7 +43,7 @@ export default function TextEditor({
       }),
       Collaboration.configure({
         document: yDoc,
-        field: id,
+        field: `textEditor-${id}`,
       }),
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",

@@ -25,17 +25,13 @@ export default function Portal() {
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.get("elements");
     let nestedElementsMap = elementsMap.get(id);
-    const url = nestedElementsMap.get("src");
     let initialX = nestedElementsMap.get("x_pos");
     let initialY = nestedElementsMap.get("y_pos");
-    const x = initialX + (e.pageX - e.dataTransfer.getData("startX"));
+    nestedElementsMap.set("container", section);
     if (typeof initialX === "string") {
-      nestedElementsMap.set("container", section);
       nestedElementsMap.set("x_pos", e.pageX);
       nestedElementsMap.set("y_pos", e.pageY);
-      nestedElementsMap.set("src", url);
     } else {
-      nestedElementsMap.set("container", section);
       nestedElementsMap.set(
         "x_pos",
         initialX + (e.pageX - e.dataTransfer.getData("startX"))
@@ -44,7 +40,6 @@ export default function Portal() {
         "y_pos",
         initialY + (e.pageY - e.dataTransfer.getData("startY"))
       );
-      nestedElementsMap.set("src", url);
     }
     forceUpdate();
   };

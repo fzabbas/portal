@@ -29,66 +29,11 @@
   }
 }
 
-// .toAdd {
-//   background-color: rgba(0, 0, 0, 0.1);
-//   position: relative;
-//   max-height: 7rem;
-
-//   max-width: 11rem;
-// }
-
-// .inPortal {
-//   position: absolute;
-//   max-height: 90%;
-//   max-width: 90%;
-//   &:hover {
-//     background-color: rgba(0, 0, 0, 0.1);
-//     border-radius: $border-radius;
-//   }
-// }
 .in-portal {
   height: 100%;
   top: 5rem;
   left: 3rem;
 }
-
-// .element {
-//   padding: 0.25rem;
-//   overflow: auto;
-//   width: 11rem;
-//   &:hover {
-//     resize: both;
-//   }
-//   &__delete {
-//     // display: none;
-//     visibility: hidden;
-//     position: absolute;
-//     top: 0;
-//     right: 0;
-//     background-color: rgba(0, 0, 0, 0.01);
-//     font-size: 0.75rem;
-//     border: none;
-//     padding: 0;
-//     cursor: pointer;
-//     width: 1rem;
-//     height: 1rem;
-//     z-index: 2;
-//   }
-
-//   &__delete-icon {
-//     @include button-icon;
-//     width: 1rem;
-//   }
-//   &__image {
-//     width: 100%;
-//     pointer-events: none;
-//   }
-// }
-
-// how to follow sass here?
-// .element:hover .element__delete {
-//   visibility: visible;
-// }
 
 .button {
   @include button-icon;

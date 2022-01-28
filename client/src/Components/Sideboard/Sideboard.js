@@ -20,16 +20,12 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     const map = yDoc.getMap("elements"); // elements meta deta
     // setting elements meta data, more infor may have to be stored
     const yMapNested = new Y.Map();
-    map.set(id, yMapNested);
-    yMapNested.set("container", "toAdd");
-    yMapNested.set("x_pos", "");
-    yMapNested.set("y_pos", "");
-
-    // map.set(id, {
-    //   container: "toAdd",
-    //   x_pos: "",
-    //   y_pos: "",
-    // });
+    yDoc.transact(() => {
+      map.set(id, yMapNested);
+      yMapNested.set("container", "toAdd");
+      yMapNested.set("x_pos", "");
+      yMapNested.set("y_pos", "");
+    });
     forceUpdate();
   };
 
@@ -40,17 +36,13 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     if (url) {
       const map = yDoc.getMap("elements"); // elements meta deta
       const yMapNested = new Y.Map();
-      map.set(id, yMapNested);
-      yMapNested.set("container", "toAdd");
-      yMapNested.set("x_pos", "");
-      yMapNested.set("y_pos", "");
-      yMapNested.set("src", url);
-      // map.set(id, {
-      //   container: "toAdd",
-      //   x_pos: "",
-      //   y_pos: "",
-      //   src: url,
-      // });
+      yDoc.transact(() => {
+        map.set(id, yMapNested);
+        yMapNested.set("container", "toAdd");
+        yMapNested.set("x_pos", "");
+        yMapNested.set("y_pos", "");
+        yMapNested.set("src", url);
+      });
       forceUpdate();
     }
     setToAddImage(false);

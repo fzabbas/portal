@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useCallback } from "react";
+import { useState, useEffect, useReducer, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
 import debounce from "lodash.debounce";
@@ -9,13 +9,14 @@ import "./Portal.scss";
 import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
-const yDoc = new Y.Doc();
-let provider = new WebrtcProvider("example-dxocument23", yDoc);
+// const yDoc = new Y.Doc();
+// let provider = new WebrtcProvider("example-document15", yDoc);
 const API_URL = `http://localhost:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
+  const [yDoc, setYDoc] = useState(new Y.Doc());
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -66,6 +67,7 @@ export default function Portal() {
   );
 
   useEffect(() => {
+    let provider = new WebrtcProvider(key, yDoc);
     axios
       // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
@@ -85,6 +87,9 @@ export default function Portal() {
       // TODO: comment out for putting
       forceUpdate();
     });
+    return () => {
+      yDoc.destroy();
+    };
   }, []);
 
   const removeElement = (e, id) => {
@@ -116,6 +121,8 @@ export default function Portal() {
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
     if (el) {
+      // TODO: add a check here to make sure there are no issues with the yMap
+      // console.log(el);
       elements[el.get("container")].push(
         <YElement
           key={id}

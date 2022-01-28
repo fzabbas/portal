@@ -1,6 +1,7 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
+import { WebsocketProvider } from "y-websocket";
 import debounce from "lodash.debounce";
 import axios from "axios";
 import * as Y from "yjs";
@@ -62,14 +63,14 @@ export default function Portal() {
       .then((resp) => resp);
   };
   const debouncedPut = useCallback(
-    debounce((yDocToPut) => putToDb(yDocToPut), 2000),
+    debounce((yDocToPut) => putToDb(yDocToPut), 1000),
     []
   );
 
   useEffect(() => {
-    let provider = new WebrtcProvider(key, yDoc, {
-      signaling: [`ws://inportal.space:4444`],
-    });
+    // let provider = new WebrtcProvider(key, yDoc);
+    let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
+    // setInterval(() => {
     axios
       // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
@@ -84,7 +85,8 @@ export default function Portal() {
         makePortal("new portal", key);
         // console.log("A portal with that key does not exist");
       });
-    yDoc.on("afterTransaction", () => {
+    // }, 1000);
+    yDoc.on("update", () => {
       debouncedPut(yDoc);
       // TODO: comment out for putting
       forceUpdate();

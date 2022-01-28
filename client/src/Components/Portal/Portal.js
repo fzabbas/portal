@@ -10,7 +10,7 @@ import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
 const yDoc = new Y.Doc();
-let provider = new WebrtcProvider("example-dxocument3", yDoc);
+let provider = new WebrtcProvider("example-dxocument23", yDoc);
 const API_URL = `http://localhost:8080`;
 
 export default function Portal() {
@@ -23,7 +23,7 @@ export default function Portal() {
 
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
-    let elementsMap = yDoc.get("elements");
+    let elementsMap = yDoc.getMap("elements");
     let nestedElementsMap = elementsMap.get(id);
     let initialX = nestedElementsMap.get("x_pos");
     let initialY = nestedElementsMap.get("y_pos");
@@ -45,7 +45,7 @@ export default function Portal() {
   };
 
   const putToDb = (yDocToPut) => {
-    console.log("putting");
+    console.log("puttin");
     const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
@@ -115,17 +115,18 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
-    console.log(el);
-    elements[el.get("container")].push(
-      <YElement
-        key={id}
-        id={id}
-        el={el}
-        removeElement={removeElement}
-        yDoc={yDoc}
-        forceUpdate={forceUpdate}
-      />
-    );
+    if (el) {
+      elements[el.get("container")].push(
+        <YElement
+          key={id}
+          id={id}
+          el={el}
+          removeElement={removeElement}
+          yDoc={yDoc}
+          forceUpdate={forceUpdate}
+        />
+      );
+    }
   });
 
   return (
@@ -137,6 +138,7 @@ export default function Portal() {
           id={key}
           yDoc={yDoc}
           placehoderText={"Add title"}
+          isHeading={true}
         />
       </header>
       <section className="portal">

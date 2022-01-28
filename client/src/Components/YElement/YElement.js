@@ -3,21 +3,42 @@ import { useResizeDetector } from "react-resize-detector";
 import TextEditor from "../TextEditor/TextEditor";
 import deleteIcon from "../../assets/icons/delete.svg";
 import "./YElement.scss";
+import { useCallback } from "react";
 
 export default function YElement({ id, el, removeElement, yDoc, forceUpdate }) {
+  const onResize = useCallback((width, height) => {
+    let elementsMap = yDoc.get("elements");
+    let element = elementsMap.get(id);
+    element.set("width", width);
+    element.set("height", height);
+  }, []);
+
+  const { width, height, ref } = useResizeDetector({
+    refreshMode: "debounce",
+    refreshRate: 25,
+    onResize,
+  });
+
   const onDragStart = (e, key) => {
     e.dataTransfer.setData("startX", e.pageX);
     e.dataTransfer.setData("startY", e.pageY);
     e.dataTransfer.setData("id", key);
   };
+
   return (
     <div
+      ref={ref}
       onDragStart={(e) => onDragStart(e, id)}
       draggable
       style={
         el.get("container") === "toAdd"
           ? {}
-          : { top: el.get("y_pos"), left: el.get("x_pos") }
+          : {
+              top: el.get("y_pos"),
+              left: el.get("x_pos"),
+              width: el.get("width") + 8,
+              height: el.get("height") + 8,
+            }
       }
       className={`element ${el.get("container")}`}
     >

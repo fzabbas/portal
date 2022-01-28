@@ -6,22 +6,16 @@ import axios from "axios";
 import * as Y from "yjs";
 import TextEditor from "../TextEditor/TextEditor";
 import "./Portal.scss";
-import deleteIcon from "../../assets/icons/delete.svg";
 import Sideboard from "../Sideboard/Sideboard";
+import YElement from "../YElement/YElement";
 
 const yDoc = new Y.Doc();
-let provider = new WebrtcProvider("example-dxocument3", yDoc);
+let provider = new WebrtcProvider("example-dxocument23", yDoc);
 const API_URL = `http://localhost:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
-
-  const onDragStart = (e, key) => {
-    e.dataTransfer.setData("startX", e.pageX);
-    e.dataTransfer.setData("startY", e.pageY);
-    e.dataTransfer.setData("id", key);
-  };
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -30,30 +24,28 @@ export default function Portal() {
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.getMap("elements");
-    const url = elementsMap.get(id).src;
-    let initialX = elementsMap.get(id).x_pos;
-    let initialY = elementsMap.get(id).y_pos;
-    const x = initialX + (e.pageX - e.dataTransfer.getData("startX"));
+    let nestedElementsMap = elementsMap.get(id);
+    let initialX = nestedElementsMap.get("x_pos");
+    let initialY = nestedElementsMap.get("y_pos");
+    nestedElementsMap.set("container", section);
     if (typeof initialX === "string") {
-      elementsMap.set(id, {
-        container: section,
-        x_pos: e.pageX,
-        y_pos: e.pageY,
-        src: url,
-      });
+      nestedElementsMap.set("x_pos", e.pageX);
+      nestedElementsMap.set("y_pos", e.pageY);
     } else {
-      elementsMap.set(id, {
-        container: section,
-        x_pos: initialX + (e.pageX - e.dataTransfer.getData("startX")),
-        y_pos: initialY + (e.pageY - e.dataTransfer.getData("startY")),
-        src: url,
-      });
+      nestedElementsMap.set(
+        "x_pos",
+        initialX + (e.pageX - e.dataTransfer.getData("startX"))
+      );
+      nestedElementsMap.set(
+        "y_pos",
+        initialY + (e.pageY - e.dataTransfer.getData("startY"))
+      );
     }
     forceUpdate();
   };
 
   const putToDb = (yDocToPut) => {
-    console.log("putting");
+    console.log("puttin");
     const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
@@ -90,6 +82,7 @@ export default function Portal() {
       });
     yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
+      // TODO: comment out for putting
       forceUpdate();
     });
   }, []);
@@ -122,33 +115,18 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
-    elements[el.container].push(
-      <div
-        key={id}
-        onDragStart={(e) => onDragStart(e, id)}
-        draggable
-        style={
-          el.container === "toAdd" ? {} : { top: el.y_pos, left: el.x_pos }
-        }
-        className={`element ${el.container}`}
-      >
-        <button
-          className="element__delete"
-          onClick={(e) => removeElement(e, id)}
-        >
-          <img
-            className="element__delete-icon"
-            src={deleteIcon}
-            alt="delete icon"
-          />
-        </button>
-        {el.src ? (
-          <img className="element__image" src={el.src} alt={el.src} />
-        ) : (
-          <TextEditor id={id} yDoc={yDoc} forceupdate={forceUpdate} />
-        )}
-      </div>
-    );
+    if (el) {
+      elements[el.get("container")].push(
+        <YElement
+          key={id}
+          id={id}
+          el={el}
+          removeElement={removeElement}
+          yDoc={yDoc}
+          forceUpdate={forceUpdate}
+        />
+      );
+    }
   });
 
   return (
@@ -160,6 +138,7 @@ export default function Portal() {
           id={key}
           yDoc={yDoc}
           placehoderText={"Add title"}
+          isHeading={true}
         />
       </header>
       <section className="portal">

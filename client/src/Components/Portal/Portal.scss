@@ -10,7 +10,9 @@
     margin: 1rem;
     padding: 1rem;
     z-index: 1;
-    background: $primary-medium;
+    // background: $primary-medium;
+    color: white;
+    background: $primary-dark;
     border-radius: $border-radius;
     display: flex;
     align-items: end;
@@ -29,119 +31,10 @@
   }
 }
 
-// .sideboard {
-//   position: fixed;
-//   top: 0;
-//   // height: 80%;
-//   right: 0;
-//   padding: 1.5rem;
-//   padding-top: 0.75rem;
-//   margin: 1rem;
-//   z-index: 2;
-//   background-color: $secondary-light-transparent;
-//   border-radius: $border-radius;
-//   box-shadow: 0 0 20px rgb(0 0 0 / 10%);
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0.75rem;
-
-//   &--minimized {
-//     padding: 0;
-//     margin: 1.75rem 2.5rem 0 0;
-//     border-radius: 50%;
-//   }
-//   &__minimize-btn {
-//     align-self: flex-end;
-//     border-radius: 50%;
-//     height: 1rem;
-//   }
-//   &__minimize-icon {
-//     @include icon;
-//     border: 1px solid black;
-//     border-radius: 50%;
-//     filter: invert(64%) sepia(28%) saturate(216%) hue-rotate(115deg)
-//       brightness(93%) contrast(89%);
-//   }
-
-//   &__header {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: end;
-//   }
-
-//   &__add-image-form {
-//     display: flex;
-//   }
-
-//   &__add-image-input {
-//     flex-grow: 1;
-//     padding-left: 0.5rem;
-//     height: 24px;
-//     border: none;
-//     font-size: 0.75rem;
-//     border-radius: $border-radius;
-//   }
-// }
-
-.toAdd {
-  background-color: rgba(0, 0, 0, 0.1);
-  position: relative;
-  max-height: 7rem;
-
-  max-width: 11rem;
-}
-
-.inPortal {
-  position: absolute;
-  max-height: 90%;
-  max-width: 90%;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: $border-radius;
-  }
-}
 .in-portal {
   height: 100%;
   top: 5rem;
   left: 3rem;
-}
-
-.element {
-  padding: 0.25rem;
-  overflow: auto;
-  width: 11rem;
-  &:hover {
-    resize: both;
-  }
-  &__delete {
-    // display: none;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.01);
-    font-size: 0.75rem;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    width: 1rem;
-    height: 1rem;
-    z-index: 2;
-  }
-
-  &__delete-icon {
-    @include button-icon;
-    width: 1rem;
-  }
-  &__image {
-    width: 100%;
-    pointer-events: none;
-  }
-}
-
-// how to follow sass here?
-.element:hover .element__delete {
-  visibility: visible;
 }
 
 .button {

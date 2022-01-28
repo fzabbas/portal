@@ -27,13 +27,18 @@
   padding-top: 0.5rem;
   &__btn {
     @include button-icon;
-    filter: invert(64%) sepia(28%) saturate(216%) hue-rotate(115deg)
-      brightness(93%) contrast(89%);
 
     &--active {
       @include button-icon;
+      filter: invert(24%) sepia(77%) saturate(3525%) hue-rotate(342deg)
+        brightness(101%) contrast(81%);
     }
   }
+}
+
+.menu--heading .menu__btn {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(33deg)
+    brightness(107%) contrast(101%);
 }
 
 .icon {
@@ -44,8 +49,10 @@
 
   &--color {
     padding: 0;
-
     background-color: inherit;
-    border-color: $primary-dark;
+    border-color: black;
+  }
+  &--heading {
+    border-color: white;
   }
 }

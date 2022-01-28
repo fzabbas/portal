@@ -67,7 +67,9 @@ export default function Portal() {
   );
 
   useEffect(() => {
-    let provider = new WebrtcProvider(key, yDoc);
+    let provider = new WebrtcProvider(key, yDoc, {
+      signaling: [`ws://inportal.space:4444`],
+    });
     axios
       // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })

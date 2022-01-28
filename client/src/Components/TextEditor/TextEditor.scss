@@ -1,0 +1,58 @@
+// TODO: make this sass compatible?
+
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror-focused {
+  outline: none;
+  border: 1px solid $primary-dark;
+  border-radius: $border-radius;
+}
+
+.ProseMirror {
+  padding: 0.25rem;
+}
+
+.menu {
+  display: flex;
+  gap: 2px;
+  padding-top: 0.5rem;
+  &__btn {
+    @include button-icon;
+
+    &--active {
+      @include button-icon;
+      filter: invert(24%) sepia(77%) saturate(3525%) hue-rotate(342deg)
+        brightness(101%) contrast(81%);
+    }
+  }
+}
+
+.menu--heading .menu__btn {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(33deg)
+    brightness(107%) contrast(101%);
+}
+
+.icon {
+  @include icon;
+  &--highlighter {
+    padding: 2px;
+  }
+
+  &--color {
+    padding: 0;
+    background-color: inherit;
+    border-color: black;
+  }
+  &--heading {
+    border-color: white;
+  }
+}

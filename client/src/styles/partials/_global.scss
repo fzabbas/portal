@@ -1,0 +1,30 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+/* general reformatting */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* general body styles */
+body {
+  font-family: "Source Sans Pro";
+  margin: 0;
+  // background-color: $primary-background;
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import debounce from "lodash.debounce";
@@ -133,9 +133,8 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
-    if (el) {
-      // TODO: add a check here to make sure there are no issues with the yMap
-      // console.log(el);
+    // typecheck: makes sure that an el rendered is a YMap
+    if (el.constructor.name === "YMap") {
       elements[el.get("container")].push(
         <YElement
           key={id}
@@ -152,7 +151,9 @@ export default function Portal() {
   return (
     <main className="portal-page">
       <header className="portal__header">
-        <h1 className="portal__heading">Portal /</h1>
+        <Link className="portal__heading" to="/">
+          Portal /
+        </Link>
         <TextEditor
           className="portal__subheading"
           id={key}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Placeholder from "@tiptap/extension-placeholder";
 import "./TextEditor.scss";
 
@@ -27,6 +28,7 @@ export default function TextEditor({
   placehoderText,
   className,
   isHeading,
+  provider,
 }) {
   const [menuHover, setMenuHover] = useState(false);
   const [colorHover, setColorHover] = useState(false);
@@ -45,6 +47,15 @@ export default function TextEditor({
       Collaboration.configure({
         document: yDoc,
         field: `textEditor-${id}`,
+      }),
+      CollaborationCursor.configure({
+        provider,
+        user: {
+          name: "  ",
+          color: `#${((Math.random() * 0xffffff) << 0)
+            .toString(16)
+            .padStart(6, "0")}`,
+        },
       }),
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",

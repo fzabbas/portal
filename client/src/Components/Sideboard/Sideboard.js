@@ -21,10 +21,13 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     // setting elements meta data, more infor may have to be stored
     const yMapNested = new Y.Map();
     yDoc.transact(() => {
+      // console.log(yMapNested);
       map.set(id, yMapNested);
       yMapNested.set("container", "toAdd");
       yMapNested.set("x_pos", "");
       yMapNested.set("y_pos", "");
+      yMapNested.set("width", 160);
+      yMapNested.set("height", 112);
     });
     forceUpdate();
   };
@@ -42,6 +45,8 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
         yMapNested.set("x_pos", "");
         yMapNested.set("y_pos", "");
         yMapNested.set("src", url);
+        yMapNested.set("width", 160);
+        yMapNested.set("height", 112);
       });
       forceUpdate();
     }

@@ -5,7 +5,14 @@ import deleteIcon from "../../assets/icons/delete.svg";
 import "./YElement.scss";
 import { useCallback } from "react";
 
-export default function YElement({ id, el, removeElement, yDoc, forceUpdate }) {
+export default function YElement({
+  id,
+  el,
+  removeElement,
+  yDoc,
+  forceUpdate,
+  provider,
+}) {
   const onResize = useCallback((width, height) => {
     let elementsMap = yDoc.get("elements");
     let element = elementsMap.get(id);
@@ -56,7 +63,12 @@ export default function YElement({ id, el, removeElement, yDoc, forceUpdate }) {
           alt={el.get("src")}
         />
       ) : (
-        <TextEditor id={id} yDoc={yDoc} forceupdate={forceUpdate} />
+        <TextEditor
+          id={id}
+          yDoc={yDoc}
+          forceupdate={forceUpdate}
+          provider={provider}
+        />
       )}
     </div>
   );

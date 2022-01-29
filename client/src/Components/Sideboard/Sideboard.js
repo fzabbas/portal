@@ -5,14 +5,12 @@ import * as Y from "yjs";
 import textIcon from "../../assets/icons/text.svg";
 import imageIcon from "../../assets/icons/image.svg";
 import addIcon from "../../assets/icons/add-square.svg";
-import minimizeIcon from "../../assets/icons/minimize.svg";
 import plusIcon from "../../assets/icons/plus.svg";
 
 import "./Sideboard.scss";
 
 export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   const [toAddImage, setToAddImage] = useState(false);
-  const [isSideboardVisible, setIsSideboardVisible] = useState(true);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const renderText = () => {
@@ -54,39 +52,19 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   };
   return (
     <>
-      <section className="sideboard sideboard--minimized">
-        <button
-          className="button sideboard__minimize-btn"
-          onClick={() => {
-            setIsSideboardVisible(!isSideboardVisible);
-          }}
-        >
-          <img
-            className="sideboard__minimize-icon"
-            src={plusIcon}
-            alt="minimize"
-          />
-        </button>
-      </section>
       <section
         className="sideboard"
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, "toAdd")}
-        style={!isSideboardVisible ? { visibility: "hidden" } : {}}
       >
-        <button
-          className="button sideboard__minimize-btn"
-          onClick={() => {
-            setIsSideboardVisible(!isSideboardVisible);
-          }}
-        >
-          <img
-            className="sideboard__minimize-icon"
-            src={minimizeIcon}
-            alt="minimize"
-          />
-        </button>
         <div className="sideboard__header">
+          <button className="button sideboard__toggle-btn">
+            <img
+              className="sideboard__minimize-icon"
+              src={plusIcon}
+              alt="minimize"
+            />
+          </button>
           <h2 className="sideboard__heading">Sideboard</h2>
           <div>
             <button className="button" onClick={renderText}>

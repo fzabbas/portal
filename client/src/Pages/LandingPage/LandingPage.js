@@ -36,8 +36,13 @@ export default function LandingPage() {
 
   return (
     <div>
-      <h1>Portal</h1>
-      <h3>A space to organize your thoughts together</h3>
+      <header className="portal__header">
+        <Link className="portal__heading" to="/">
+          Portal /
+        </Link>
+        <h2 className="portal__subheading">An entry to your ideas</h2>
+      </header>
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="portalKey">Join a portal</label>
         <input type="text" id="portalKey" name="portalKey"></input>

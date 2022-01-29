@@ -1,0 +1,15 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.portal {
+  &__header {
+    @include main-header;
+  }
+  &__heading {
+    @include main-heading;
+  }
+  &__subheading {
+    @include subheading;
+    font-weight: 400;
+  }
+}

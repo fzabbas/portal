@@ -4,41 +4,47 @@
 .sideboard {
   position: fixed;
   top: 0;
-  // height: 80%;
   right: 0;
-  padding: 1.5rem;
+  padding: 0.75rem 2rem;
   padding-top: 0.75rem;
-  margin: 1rem;
   z-index: 2;
   background-color: $secondary-light-transparent;
-  border-radius: $border-radius;
+
   box-shadow: 0 0 20px rgb(0 0 0 / 10%);
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
+  overflow: scroll;
   gap: 0.75rem;
+  margin-right: -13rem;
+
+  transition: margin-right 0.4s ease-in-out;
+  &:hover {
+    margin-right: 0;
+  }
 
   &--minimized {
     padding: 0;
     margin: 1.75rem 2.5rem 0 0;
     border-radius: 50%;
   }
-  &__minimize-btn {
-    align-self: flex-end;
+  &__toggle-btn {
     border-radius: 50%;
     height: 1rem;
+    margin-left: -1.5rem;
+    background-color: $secondary-light-transparent;
+    align-self: center;
   }
   &__minimize-icon {
     @include icon;
-    border: 1px solid black;
-    border-radius: 50%;
-    filter: invert(64%) sepia(28%) saturate(216%) hue-rotate(115deg)
-      brightness(93%) contrast(89%);
+    border: none;
   }
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: end;
+    min-width: 11rem;
   }
 
   &__add-image-form {

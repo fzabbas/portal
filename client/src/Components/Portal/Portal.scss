@@ -8,11 +8,8 @@
   width: 100%; // overflow: hidden;
   &__header {
     margin: 1rem;
-    padding: 1rem;
+    margin-top: 0;
     z-index: 1;
-    // background: $primary-medium;
-    // color: white;
-    // background: $primary-dark;
     color: $primary-dark;
     border-radius: $border-radius;
     display: flex;

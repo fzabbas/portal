@@ -23,6 +23,7 @@
   padding: 0.25rem;
   overflow: auto;
   width: 11rem;
+  min-height: 3rem;
   &:hover {
     resize: both;
   }

@@ -18,6 +18,8 @@ export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
   const [yDoc, setYDoc] = useState(new Y.Doc());
+  const [portalWidth, setPortalWidth] = useState(1400);
+  const [portalHeight, setPortalHeight] = useState(800);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -26,23 +28,30 @@ export default function Portal() {
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.getMap("elements");
-    let nestedElementsMap = elementsMap.get(id);
-    let initialX = nestedElementsMap.get("x_pos");
-    let initialY = nestedElementsMap.get("y_pos");
-    nestedElementsMap.set("container", section);
+    let droppedElementsMap = elementsMap.get(id);
+    let initialX = droppedElementsMap.get("x_pos");
+    let initialY = droppedElementsMap.get("y_pos");
+    droppedElementsMap.set("container", section);
+    // if moving from sideboard
     if (typeof initialX === "string") {
-      nestedElementsMap.set("x_pos", e.pageX);
-      nestedElementsMap.set("y_pos", e.pageY);
+      droppedElementsMap.set("x_pos", e.pageX);
+      droppedElementsMap.set("y_pos", e.pageY);
     } else {
-      nestedElementsMap.set(
+      droppedElementsMap.set(
         "x_pos",
         initialX + (e.pageX - e.dataTransfer.getData("startX"))
       );
-      nestedElementsMap.set(
+      droppedElementsMap.set(
         "y_pos",
         initialY + (e.pageY - e.dataTransfer.getData("startY"))
       );
     }
+    const newWidth =
+      droppedElementsMap.get("x_pos") + droppedElementsMap.get("width");
+    const newHeight =
+      droppedElementsMap.get("y_pos") + droppedElementsMap.get("height");
+    if (newWidth > portalWidth) setPortalWidth(newWidth);
+    if (newHeight > portalHeight) setPortalHeight(newHeight);
     forceUpdate();
   };
 
@@ -152,7 +161,10 @@ export default function Portal() {
           isHeading={true}
         />
       </header>
-      <section className="portal">
+      <section
+        className="portal"
+        style={{ width: portalWidth, height: portalHeight }}
+      >
         <div
           className="in-portal"
           onDragOver={onDragOver}
@@ -163,7 +175,8 @@ export default function Portal() {
       </section>
       <Sideboard
         onDragOver={onDragOver}
-        onDrop={onDrop}
+        // onDrop={onDrop}
+        onDrop={(e) => onDrop(e, "toAdd")}
         elements={elements}
         yDoc={yDoc}
       />

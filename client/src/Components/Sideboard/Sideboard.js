@@ -70,7 +70,10 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
             <button className="button" onClick={renderText}>
               <img src={textIcon} alt="text-icon" />
             </button>
-            <button className="button">
+            <button
+              className="button"
+              onClick={() => setToAddImage(!toAddImage)}
+            >
               <img src={imageIcon} alt="image-icon" />
             </button>
           </div>

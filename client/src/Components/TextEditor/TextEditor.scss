@@ -62,11 +62,6 @@
   }
 }
 
-.menu--heading .menu__btn {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(33deg)
-    brightness(107%) contrast(101%);
-}
-
 .icon {
   @include icon;
   &--highlighter {
@@ -77,8 +72,5 @@
     padding: 0;
     background-color: inherit;
     border-color: black;
-  }
-  &--heading {
-    border-color: white;
   }
 }

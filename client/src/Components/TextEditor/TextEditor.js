@@ -88,7 +88,7 @@ export default function TextEditor({
       {editor && (editor.isFocused || menuHover || colorHover) ? (
         // {editor ? (
         <div
-          className={isHeading ? "menu menu--heading" : "menu"}
+          className="menu"
           onMouseEnter={() => setMenuHover(true)}
           onMouseLeave={() => setMenuHover(false)}
         >
@@ -96,11 +96,7 @@ export default function TextEditor({
             onFocus={() => setColorHover(true)}
             onBlur={() => setColorHover(false)}
             type="color"
-            // style={{ color: "#000000" }}
-            className={
-              isHeading ? "icon icon--color icon--heading" : "icon icon--color"
-            }
-            // className="icon icon--color"
+            className={"icon icon--color"}
             onInput={(event) =>
               editor.chain().focus().setColor(event.target.value).run()
             }

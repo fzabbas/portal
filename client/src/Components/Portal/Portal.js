@@ -17,7 +17,12 @@ const API_URL = `http://${window.location.hostname}:8080`;
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
-  const [yDoc, setYDoc] = useState(new Y.Doc());
+  const [yDoc, _setYDoc] = useState(() => new Y.Doc());
+  const [provider, _setProvider] = useState(
+    () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
+  );
+  // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
+
   const [portalWidth, setPortalWidth] = useState(1400);
   const [portalHeight, setPortalHeight] = useState(800);
 
@@ -78,7 +83,7 @@ export default function Portal() {
 
   useEffect(() => {
     // let provider = new WebrtcProvider(key, yDoc);
-    let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
+    // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
     // setInterval(() => {
     axios
       // other type could be arrayBuffer
@@ -92,10 +97,9 @@ export default function Portal() {
       .catch(() => {
         // TODO make portal name from title? maybe database doesnt even need it?
         makePortal("new portal", key);
-        // console.log("A portal with that key does not exist");
       });
     // }, 1000);
-    yDoc.on("update", () => {
+    yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
       // TODO: comment out for putting
       forceUpdate();
@@ -104,7 +108,7 @@ export default function Portal() {
       yDoc.destroy();
     };
   }, []);
-
+  // forceUpdate();
   const removeElement = (e, id) => {
     e.preventDefault();
     yElements.delete(id);
@@ -143,6 +147,7 @@ export default function Portal() {
           removeElement={removeElement}
           yDoc={yDoc}
           forceUpdate={forceUpdate}
+          provider={provider}
         />
       );
     }
@@ -160,6 +165,7 @@ export default function Portal() {
           yDoc={yDoc}
           placehoderText={"Add title"}
           isHeading={true}
+          provider={provider}
         />
       </header>
       <section

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Redirect, useHistory, Link } from "react-router-dom";
 import "./LandingPage.scss";
+// import heroImage from "../../assets/images/hero.webp";
 
 const API_URL = `http://${window.location.hostname}:8080`;
 
@@ -35,28 +36,41 @@ export default function LandingPage() {
   }
 
   return (
-    <div>
-      <header className="portal__header">
-        <Link className="portal__heading" to="/">
+    <div className="landing">
+      <header className="landing__header">
+        <Link className="landing__heading" to="/">
           Portal /
         </Link>
-        <h2 className="portal__subheading">An entry to your ideas</h2>
+        <h2 className="landing__subheading">An entry to your ideas</h2>
       </header>
-
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="portalKey">Join a portal</label>
-        <input type="text" id="portalKey" name="portalKey"></input>
-        <button>Go to Portal</button>
-        {validKey ? <></> : <p>Please provide a key</p>}
-        {newKey ? (
-          <>
-            <p>{`Do you eant to make a portal with this key: ${newKey}`}</p>
-            <Link to={`/portal/${newKey}`}>Yes!</Link>
-          </>
-        ) : (
-          <></>
-        )}
-      </form>
+      <section className="landing__hero-image">
+        <form className="landing__form" onSubmit={handleSubmit}>
+          <label htmlFor="portalKey">Join a portal:</label>
+          <input
+            className="landing__input"
+            type="text"
+            id="portalKey"
+            name="portalKey"
+          ></input>
+          <button className="landing__button">Open Portal</button>
+          {validKey ? (
+            <></>
+          ) : (
+            <p className="landing__prompt">Please provide a key</p>
+          )}
+          {newKey ? (
+            <>
+              <p>This portal does not exist. Do you want to make it?</p>
+              <p className="landing__newkey">key: {newKey}</p>
+              <Link className="landing__newportal" to={`/portal/${newKey}`}>
+                YES!
+              </Link>
+            </>
+          ) : (
+            <></>
+          )}
+        </form>
+      </section>
     </div>
   );
 }

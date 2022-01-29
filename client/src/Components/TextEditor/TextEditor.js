@@ -48,15 +48,15 @@ export default function TextEditor({
         document: yDoc,
         field: `textEditor-${id}`,
       }),
-      CollaborationCursor.configure({
-        provider,
-        user: {
-          name: "  ",
-          color: `#${((Math.random() * 0xffffff) << 0)
-            .toString(16)
-            .padStart(6, "0")}`,
-        },
-      }),
+      // CollaborationCursor.configure({
+      //   provider,
+      //   user: {
+      //     name: "  ",
+      //     color: `#${((Math.random() * 0xffffff) << 0)
+      //       .toString(16)
+      //       .padStart(6, "0")}`,
+      //   },
+      // }),
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",
       }),

@@ -65,7 +65,7 @@
     align-self: center;
     background-color: $secondary-dark-transparent;
     padding: 0.25rem;
-    border-radius: 25%;
+    border-radius: $border-radius;
     width: fit-content;
   }
 }

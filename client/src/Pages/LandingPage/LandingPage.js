@@ -52,7 +52,7 @@ export default function LandingPage() {
             id="portalKey"
             name="portalKey"
           ></input>
-          <button className="landing__button">Go to Portal</button>
+          <button className="landing__button">Open Portal</button>
           {validKey ? (
             <></>
           ) : (
@@ -60,8 +60,8 @@ export default function LandingPage() {
           )}
           {newKey ? (
             <>
-              <p>Do you eant to make a portal with this key: </p>
-              <p className="landing__newkey">{newKey}</p>
+              <p>This portal does not exist. Do you want to make it?</p>
+              <p className="landing__newkey">key: {newKey}</p>
               <Link className="landing__newportal" to={`/portal/${newKey}`}>
                 YES!
               </Link>

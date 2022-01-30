@@ -13,6 +13,7 @@ import "./Sideboard.scss";
 
 export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   const [toAddImage, setToAddImage] = useState(false);
+  const [toAddLink, setToAddLink] = useState(false);
   const [showSideboard, setShowSideboard] = useState(false);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
@@ -53,6 +54,29 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     }
     setToAddImage(false);
   };
+
+  const renderLink = (e) => {
+    e.preventDefault();
+    const id = uuidv4();
+    const url = e.target.linkURL.value;
+    if (url) {
+      const map = yDoc.getMap("elements"); // elements meta deta
+      const yMapNested = new Y.Map();
+      yDoc.transact(() => {
+        map.set(id, yMapNested);
+        yMapNested.set("container", "toAdd");
+        yMapNested.set("x_pos", "");
+        yMapNested.set("y_pos", "");
+        yMapNested.set("src", e.target.linkURL.value);
+        yMapNested.set("hrefName", e.target.linkName.value);
+        yMapNested.set("width", 160);
+        yMapNested.set("height", 112);
+      });
+    }
+
+    setToAddLink(false);
+  };
+
   return (
     <>
       <section
@@ -85,7 +109,7 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
             </button>
             <button
               className="sideboard__button"
-              onClick={() => setToAddImage(!toAddImage)}
+              onClick={() => setToAddLink(!toAddLink)}
             >
               <img
                 className="sideboard__link-icon"
@@ -101,7 +125,28 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
               className="sideboard__add-image-input"
               type="text"
               name="imageURL"
-              placeholder="Add image URL..."
+              placeholder={"Add image URL..."}
+            />
+            <button className="sideboard__button">
+              <img src={addIcon} alt="add-icon" />
+            </button>
+          </form>
+        ) : (
+          <></>
+        )}
+        {toAddLink ? (
+          <form className="sideboard__add-image-form" onSubmit={renderLink}>
+            <input
+              className="sideboard__add-image-input"
+              type="text"
+              name="linkName"
+              placeholder={"Name of the link"}
+            />
+            <input
+              className="sideboard__add-image-input"
+              type="text"
+              name="linkURL"
+              placeholder={"Add link"}
             />
             <button className="sideboard__button">
               <img src={addIcon} alt="add-icon" />

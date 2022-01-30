@@ -57,11 +57,15 @@ export default function YElement({
         />
       </button>
       {el.get("src") ? (
-        <img
-          className="element__image"
-          src={el.get("src")}
-          alt={el.get("src")}
-        />
+        el.get("hrefName") ? (
+          <a href={el.get("src")}>{el.get("hrefName")}</a>
+        ) : (
+          <img
+            className="element__image"
+            src={el.get("src")}
+            alt={el.get("src")}
+          />
+        )
       ) : (
         <TextEditor
           id={id}

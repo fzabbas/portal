@@ -15,6 +15,7 @@
   }
   &__heading {
     @include main-heading;
+    font-weight: 400;
   }
   &__subheading {
     @include subheading;
@@ -67,5 +68,17 @@
     padding: 0.25rem;
     border-radius: $border-radius;
     width: fit-content;
+  }
+}
+
+.features {
+  padding: 2rem;
+  &__heading {
+    @include main-heading;
+    padding-bottom: 1rem;
+  }
+  &__add-el-video {
+    width: 60%;
+    max-width: 800px;
   }
 }

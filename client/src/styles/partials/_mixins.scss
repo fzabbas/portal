@@ -5,6 +5,7 @@
   width: fit-content;
   padding: 0;
   border: none;
+  cursor: pointer;
 }
 
 @mixin icon {
@@ -17,7 +18,7 @@
 
 @mixin main-header {
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 2rem;
   padding-top: 0.5rem;
   z-index: 1;
   color: $primary-dark;

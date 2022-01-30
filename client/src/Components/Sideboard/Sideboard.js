@@ -6,11 +6,13 @@ import textIcon from "../../assets/icons/text.svg";
 import imageIcon from "../../assets/icons/image.svg";
 import addIcon from "../../assets/icons/add-square.svg";
 import plusIcon from "../../assets/icons/plus.svg";
+import minusIcon from "../../assets/icons/minimize.svg";
 
 import "./Sideboard.scss";
 
 export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   const [toAddImage, setToAddImage] = useState(false);
+  const [showSideboard, setShowSideboard] = useState(false);
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const renderText = () => {
@@ -53,25 +55,31 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   return (
     <>
       <section
+        style={
+          showSideboard ? { "margin-right": 0 } : { "margin-right": "-13rem" }
+        }
         className="sideboard"
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, "toAdd")}
       >
         <div className="sideboard__header">
-          <button className="button sideboard__toggle-btn">
+          <button
+            className="sideboard__button sideboard__toggle-btn"
+            onClick={() => setShowSideboard(!showSideboard)}
+          >
             <img
               className="sideboard__minimize-icon"
-              src={plusIcon}
+              src={showSideboard ? minusIcon : plusIcon}
               alt="minimize"
             />
           </button>
           <h2 className="sideboard__heading">Sideboard</h2>
           <div>
-            <button className="button" onClick={renderText}>
+            <button className="sideboard__button" onClick={renderText}>
               <img src={textIcon} alt="text-icon" />
             </button>
             <button
-              className="button"
+              className="sideboard__button"
               onClick={() => setToAddImage(!toAddImage)}
             >
               <img src={imageIcon} alt="image-icon" />
@@ -86,7 +94,7 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
               name="imageURL"
               placeholder="Add image URL..."
             />
-            <button className="button">
+            <button className="sideboard__button">
               <img src={addIcon} alt="add-icon" />
             </button>
           </form>

@@ -2,7 +2,14 @@ import axios from "axios";
 import { useState, React } from "react";
 import { Redirect, useHistory, Link } from "react-router-dom";
 import "./LandingPage.scss";
+
+// assets
 import addElementsVideo from "../../assets/videos/add-elements-video.mp4";
+import collabVideo from "../../assets/videos/collab.mp4";
+import linkedinIcon from "../../assets/icons/linkedin.svg";
+import githubIcon from "../../assets/icons/github.svg";
+import mailIcon from "../../assets/icons/mail.svg";
+
 const API_URL = `http://${window.location.hostname}:8080`;
 
 export default function LandingPage() {
@@ -35,7 +42,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="landing">
+    <main className="landing">
       <header className="landing__header">
         <Link className="landing__heading" to="/">
           Portal /
@@ -50,6 +57,7 @@ export default function LandingPage() {
             type="text"
             id="portalKey"
             name="portalKey"
+            placeholder="Add the secret key..."
           ></input>
           <button className="landing__button">Open Portal</button>
           {validKey ? (
@@ -72,19 +80,86 @@ export default function LandingPage() {
       </section>
       <section className="features">
         <p className="features__heading">Features</p>
-        <div>
-          <video
-            preload="auto"
-            muted
-            playsInline
-            autoPlay
-            loop
-            className="features__add-el-video"
-          >
-            <source src={addElementsVideo} type="video/mp4" />
-          </video>
+        <div className="features__videos">
+          <div className="features__feature">
+            <video
+              preload="auto"
+              muted
+              playsInline
+              autoPlay
+              loop
+              className="features__video"
+            >
+              <source src={addElementsVideo} type="video/mp4" />
+            </video>
+            <div className="features__content">
+              <h3 className="features__subheading">Add text or images</h3>
+              <p className="features__text">
+                Add a text editor that allows you customize your text as you see
+                fit.
+              </p>
+              <p className="features__text">
+                For images, simply paste the image URL and click the button!
+              </p>
+              <p className="features__text">
+                All elements can be resized to change the size of the element.
+                If the text or image does not fit in the resized dimensions, the
+                element will have a scrollbar so you can see what is hiding out
+                of the box
+              </p>
+            </div>
+          </div>
+          <div className="features__feature">
+            <div className="features__content">
+              <h3 className="features__subheading">Collaborate</h3>
+              <p className="features__text">
+                Share your portals with people to get their input
+              </p>
+              <p className="features__text">
+                Portals uses data types called CRDTs that make sure that
+                conflicts don't arise from multiple people using the same portal
+              </p>
+            </div>
+            <video
+              preload="auto"
+              muted
+              playsInline
+              autoPlay
+              loop
+              className="features__video"
+            >
+              <source src={collabVideo} type="video/mp4" />
+            </video>
+          </div>
         </div>
       </section>
-    </div>
+      <div className="secret features">
+        <p className="features__subheading">Is it a secret Portal?</p>
+        <p className="features__text-bold">Not exactly...</p>
+        <p>
+          The portal is hidden in plain sight. Anyone with the secret key can go
+          to the portal and change it as they wish
+        </p>
+        <p>
+          To make it harder for people to find your portal, make sure the key is
+          not easy to guess.
+        </p>
+      </div>
+      <footer className="footer">
+        <a className="footer__link" href="https://www.linkedin.com/in/fzabbas/">
+          <img
+            className="footer__icon"
+            src={linkedinIcon}
+            alt="linkedin link"
+          />
+        </a>
+        <a className="footer__link" href="mailto:farhana.z.abbas@gmail.com">
+          <img className="footer__icon" src={mailIcon} alt="mail link" />
+        </a>
+        <a className="footer__link" href="https://github.com/fzabbas/portal">
+          <img className="footer__icon" src={githubIcon} alt="github link" />
+        </a>
+      </footer>
+    </main>
   );
 }

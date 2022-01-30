@@ -79,16 +79,20 @@ export default function LandingPage() {
         </form>
       </section>
       <section className="features">
-        <p className="features__heading">Features</p>
+        {/* <p className="features__heading">Features</p> */}
         <div className="features__videos">
           <div className="features__feature">
+            <h3 className="features__subheading--alternate">
+              Add text or images
+            </h3>
+
             <video
               preload="auto"
               muted
               playsInline
               autoPlay
               loop
-              className="features__video"
+              className="features__video features__content"
             >
               <source src={addElementsVideo} type="video/mp4" />
             </video>
@@ -110,6 +114,8 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="features__feature">
+            <h3 className="features__subheading--alternate">Collaborate</h3>
+
             <div className="features__content">
               <h3 className="features__subheading">Collaborate</h3>
               <p className="features__text">
@@ -126,7 +132,7 @@ export default function LandingPage() {
               playsInline
               autoPlay
               loop
-              className="features__video"
+              className="features__video features__content"
             >
               <source src={collabVideo} type="video/mp4" />
             </video>
@@ -134,7 +140,7 @@ export default function LandingPage() {
         </div>
       </section>
       <div className="secret features">
-        <p className="features__subheading">Is it a secret Portal?</p>
+        <p className="features__subheading--center">Is it a secret Portal?</p>
         <p className="features__text-bold">Not exactly...</p>
         <p>
           The portal is hidden in plain sight. Anyone with the secret key can go

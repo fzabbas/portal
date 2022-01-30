@@ -12,6 +12,10 @@
     @include main-header;
     width: 100%;
     position: absolute;
+    @include breakpoint-small {
+      flex-direction: column;
+      align-items: center;
+    }
   }
   &__heading {
     @include main-heading;
@@ -26,8 +30,8 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 2000px;
-    background-attachment: fixed;
-    height: 100vh;
+    // background-attachment: fixed;
+    height: 95vh;
     width: 100%;
     object-fit: cover;
     display: flex;
@@ -119,11 +123,12 @@
     @include breakpoint-small {
       gap: 1rem;
     }
-    // padding: 0 5rem;
   }
 
   &__video {
-    order: -1;
+    @include breakpoint-medium {
+      order: -1;
+    }
   }
   &__content {
     width: 50%;

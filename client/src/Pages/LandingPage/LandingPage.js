@@ -83,9 +83,8 @@ export default function LandingPage() {
         <div className="features__videos">
           <div className="features__feature">
             <h3 className="features__subheading--alternate">
-              Add text or images
+              Add Text, Images or Links
             </h3>
-
             <video
               preload="auto"
               muted
@@ -97,19 +96,20 @@ export default function LandingPage() {
               <source src={addElementsVideo} type="video/mp4" />
             </video>
             <div className="features__content">
-              <h3 className="features__subheading">Add text or images</h3>
+              <h3 className="features__subheading">
+                Add Text, Images or Links
+              </h3>
               <p className="features__text">
-                Add a text editor that allows you customize your text as you see
-                fit.
+                Add a text boxes and customize them as you see fit.
               </p>
               <p className="features__text">
-                For images, simply paste the image URL and click the button!
+                For images and links, simply paste the image URL and click the
+                button!
               </p>
               <p className="features__text">
-                All elements can be resized to change the size of the element.
-                If the text or image does not fit in the resized dimensions, the
-                element will have a scrollbar so you can see what is hiding out
-                of the box
+                All elements can be resized. If the text or image does not fit
+                in the resized dimensions, the element will have a scrollbar so
+                you can see what is hiding out of the box
               </p>
             </div>
           </div>

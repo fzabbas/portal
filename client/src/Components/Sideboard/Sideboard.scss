@@ -55,13 +55,21 @@
     margin-left: 0.25rem;
   }
 
-  &__add-image-form {
+  &__add-form {
     width: 11rem;
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  &__add-image-input {
+  &__form-validity {
+    order: 5;
+    font-size: 0.75rem;
+    margin-top: -0.75rem;
+    color: red;
+  }
+
+  &__add-input {
     flex-grow: 1;
     width: 9rem;
     padding-left: 0.5rem;

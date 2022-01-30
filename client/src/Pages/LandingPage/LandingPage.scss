@@ -73,12 +73,58 @@
 
 .features {
   padding: 2rem;
+  background-color: $primary-light;
   &__heading {
     @include main-heading;
+    padding-bottom: 2rem;
+  }
+  &__subheading {
+    @include subheading;
     padding-bottom: 1rem;
   }
-  &__add-el-video {
+  &__content {
+    width: 30%;
+  }
+  &__text {
+    padding-bottom: 1rem;
+  }
+  &__text-bold {
+    font-weight: 600;
+  }
+  &__videos {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 0 5rem;
+  }
+  &__video {
     width: 60%;
     max-width: 800px;
+  }
+  &__feature {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+  }
+}
+
+.secret {
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.footer {
+  display: flex;
+  gap: 2rem;
+  background-color: white;
+  padding: 1rem;
+  justify-content: center;
+  &__icon {
+    width: 2rem;
   }
 }

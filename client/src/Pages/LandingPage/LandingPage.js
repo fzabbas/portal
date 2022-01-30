@@ -1,9 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, React } from "react";
 import { Redirect, useHistory, Link } from "react-router-dom";
 import "./LandingPage.scss";
-// import heroImage from "../../assets/images/hero.webp";
-
+import addElementsVideo from "../../assets/videos/add-elements-video.mp4";
 const API_URL = `http://${window.location.hostname}:8080`;
 
 export default function LandingPage() {
@@ -70,6 +69,21 @@ export default function LandingPage() {
             <></>
           )}
         </form>
+      </section>
+      <section className="features">
+        <p className="features__heading">Features</p>
+        <div>
+          <video
+            preload="auto"
+            muted
+            playsInline
+            autoPlay
+            loop
+            className="features__add-el-video"
+          >
+            <source src={addElementsVideo} type="video/mp4" />
+          </video>
+        </div>
       </section>
     </div>
   );

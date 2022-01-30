@@ -23,7 +23,6 @@
   padding: 0.25rem;
   overflow: auto;
   width: 11rem;
-  min-height: 3rem;
   &:hover {
     resize: both;
   }
@@ -32,7 +31,7 @@
     visibility: hidden;
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, 0.01);
     font-size: 0.75rem;
     border: none;

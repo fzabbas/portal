@@ -7,6 +7,7 @@ import imageIcon from "../../assets/icons/image.svg";
 import addIcon from "../../assets/icons/add-square.svg";
 import plusIcon from "../../assets/icons/plus.svg";
 import minusIcon from "../../assets/icons/minimize.svg";
+import linksIcon from "../../assets/icons/links.svg";
 
 import "./Sideboard.scss";
 
@@ -55,9 +56,7 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
   return (
     <>
       <section
-        style={
-          showSideboard ? { "margin-right": 0 } : { "margin-right": "-13rem" }
-        }
+        style={showSideboard ? { marginRight: 0 } : { marginRight: "-13rem" }}
         className="sideboard"
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, "toAdd")}
@@ -83,6 +82,16 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
               onClick={() => setToAddImage(!toAddImage)}
             >
               <img src={imageIcon} alt="image-icon" />
+            </button>
+            <button
+              className="sideboard__button"
+              onClick={() => setToAddImage(!toAddImage)}
+            >
+              <img
+                className="sideboard__link-icon"
+                src={linksIcon}
+                alt="image-icon"
+              />
             </button>
           </div>
         </div>

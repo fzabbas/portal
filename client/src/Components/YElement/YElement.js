@@ -59,7 +59,7 @@ export default function YElement({
       </button>
       {el.get("src") ? (
         el.get("hrefName") ? (
-          <a className="element__link" href={el.get("src")}>
+          <a className="element__link" href={el.get("src")} target={"_blank"}>
             <img className="element__delete-icon" src={linksIcon} alt="link" />
             {el.get("hrefName")}
           </a>

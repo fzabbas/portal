@@ -12,6 +12,10 @@
     @include main-header;
     width: 100%;
     position: absolute;
+    @include breakpoint-small {
+      flex-direction: column;
+      align-items: center;
+    }
   }
   &__heading {
     @include main-heading;
@@ -26,8 +30,8 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 2000px;
-    background-attachment: fixed;
-    height: 100vh;
+    // background-attachment: fixed;
+    height: 95vh;
     width: 100%;
     object-fit: cover;
     display: flex;
@@ -72,8 +76,11 @@
 }
 
 .features {
-  padding: 2rem;
+  padding: 4rem;
   background-color: $primary-light;
+  @include breakpoint-small {
+    padding: 1rem;
+  }
   &__heading {
     @include main-heading;
     padding-bottom: 2rem;
@@ -81,10 +88,24 @@
   &__subheading {
     @include subheading;
     padding-bottom: 1rem;
+    @include breakpoint-large {
+      display: none;
+    }
+
+    &--alternate {
+      @include subheading;
+      display: none;
+      @include breakpoint-large {
+        display: block;
+        align-self: flex-start;
+        order: -2;
+      }
+    }
+    &--center {
+      @include subheading;
+    }
   }
-  &__content {
-    width: 30%;
-  }
+
   &__text {
     padding-bottom: 1rem;
   }
@@ -95,16 +116,44 @@
     display: flex;
     flex-direction: column;
     gap: 4rem;
-    padding: 0 5rem;
+
+    @include breakpoint-medium {
+      gap: 2rem;
+    }
+    @include breakpoint-small {
+      gap: 1rem;
+    }
   }
+
   &__video {
-    width: 60%;
-    max-width: 800px;
+    @include breakpoint-medium {
+      order: -1;
+    }
   }
+  &__content {
+    width: 50%;
+    @include breakpoint-large {
+      width: 70%;
+    }
+    @include breakpoint-medium {
+      width: 100%;
+    }
+  }
+
   &__feature {
     display: flex;
     gap: 4rem;
     justify-content: center;
+    @include breakpoint-large {
+      flex-direction: column;
+      align-items: center;
+    }
+    @include breakpoint-medium {
+      gap: 2rem;
+    }
+    @include breakpoint-small {
+      gap: 1rem;
+    }
   }
 }
 

@@ -1,5 +1,22 @@
 @use "./variables" as *;
 
+// breakpoints
+@mixin breakpoint-large {
+  @media (max-width: 1000px) {
+    @content;
+  }
+}
+@mixin breakpoint-medium {
+  @media (max-width: 999px) {
+    @content;
+  }
+}
+@mixin breakpoint-small {
+  @media (max-width: 568px) {
+    @content;
+  }
+}
+
 @mixin button-icon {
   background-color: inherit;
   width: fit-content;
@@ -39,4 +56,9 @@
   font-weight: 400;
   display: flex;
   align-items: flex-start;
+
+  @include breakpoint-small {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
 }

@@ -18,6 +18,7 @@
 }
 
 .ProseMirror {
+  margin: 0.75rem;
   padding: 0.25rem;
 }
 
@@ -50,7 +51,8 @@
 .menu {
   display: flex;
   gap: 2px;
-  padding-top: 0.5rem;
+  // padding-top: 0.5rem;
+  padding-left: 1rem;
   &__btn {
     @include button-icon;
 

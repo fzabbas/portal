@@ -14,13 +14,16 @@
   max-height: 90%;
   max-width: 90%;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
     border-radius: $border-radius;
+    padding: 3px;
+    border: 1px solid black;
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px #999;
   }
 }
 
 .element {
-  padding: 0.25rem;
+  padding: 4px;
   overflow: auto;
   width: 11rem;
   &:hover {
@@ -30,8 +33,8 @@
     // display: none;
     visibility: hidden;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0.1rem;
+    left: 0.1rem;
     background-color: rgba(0, 0, 0, 0.01);
     font-size: 0.75rem;
     border: none;

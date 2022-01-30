@@ -85,8 +85,8 @@ export default function TextEditor({
         onClick={handleClick}
         editor={editor}
       />
-      {editor && (editor.isFocused || menuHover || colorHover) ? (
-        // {editor ? (
+      {/* {editor && (editor.isFocused || menuHover || colorHover) ? ( */}
+      {editor ? (
         <div
           className="menu"
           onMouseEnter={() => setMenuHover(true)}

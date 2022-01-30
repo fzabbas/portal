@@ -2,6 +2,7 @@ import { useResizeDetector } from "react-resize-detector";
 
 import TextEditor from "../TextEditor/TextEditor";
 import deleteIcon from "../../assets/icons/delete.svg";
+import linksIcon from "../../assets/icons/links-line.svg";
 import "./YElement.scss";
 import { useCallback } from "react";
 
@@ -57,11 +58,18 @@ export default function YElement({
         />
       </button>
       {el.get("src") ? (
-        <img
-          className="element__image"
-          src={el.get("src")}
-          alt={el.get("src")}
-        />
+        el.get("hrefName") ? (
+          <a className="element__link" href={el.get("src")} target={"_blank"}>
+            <img className="element__delete-icon" src={linksIcon} alt="link" />
+            {el.get("hrefName")}
+          </a>
+        ) : (
+          <img
+            className="element__image"
+            src={el.get("src")}
+            alt={el.get("src")}
+          />
+        )
       ) : (
         <TextEditor
           id={id}

@@ -50,6 +50,16 @@
     width: 100%;
     pointer-events: none;
   }
+
+  &__link {
+    display: flex;
+    width: fit-content;
+    border-radius: $border-radius;
+    border: 1px solid $primary-dark;
+    padding: 0.1rem 1rem;
+    justify-content: space-around;
+    gap: 0.5rem;
+  }
 }
 
 .element:hover .element__delete {

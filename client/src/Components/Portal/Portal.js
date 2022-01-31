@@ -23,8 +23,8 @@ export default function Portal() {
   );
   // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
 
-  const [portalWidth, setPortalWidth] = useState(1400);
-  const [portalHeight, setPortalHeight] = useState(800);
+  const [portalWidth, setPortalWidth] = useState(window.innerWidth);
+  const [portalHeight, setPortalHeight] = useState(window.innerHeight);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -55,8 +55,12 @@ export default function Portal() {
       droppedElementsMap.get("x_pos") + droppedElementsMap.get("width");
     const newHeight =
       droppedElementsMap.get("y_pos") + droppedElementsMap.get("height");
-    if (newWidth > portalWidth) setPortalWidth(newWidth);
-    if (newHeight > portalHeight) setPortalHeight(newHeight);
+    newWidth > window.innerWidth
+      ? setPortalWidth(newWidth)
+      : setPortalWidth(window.innerWidth);
+    newHeight > window.innerHeight
+      ? setPortalHeight(newHeight)
+      : setPortalHeight(window.innerHeight);
     forceUpdate();
   };
 

@@ -13,12 +13,11 @@
   position: absolute;
   max-height: 90%;
   max-width: 90%;
+  border-radius: $border-radius;
   &:hover {
-    border-radius: $border-radius;
-    padding: 3px;
-    border: 1px solid black;
-    transform: translate(2px, 2px);
-    box-shadow: 3px 3px 0px #999;
+    outline: 1px solid #eee;
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0px #eee;
   }
 }
 

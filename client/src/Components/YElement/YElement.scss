@@ -13,14 +13,16 @@
   position: absolute;
   max-height: 90%;
   max-width: 90%;
+  border-radius: $border-radius;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: $border-radius;
+    outline: 1px solid #eee;
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0px #eee;
   }
 }
 
 .element {
-  padding: 0.25rem;
+  padding: 4px;
   overflow: auto;
   width: 11rem;
   &:hover {
@@ -30,8 +32,8 @@
     // display: none;
     visibility: hidden;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0.1rem;
+    left: 0.1rem;
     background-color: rgba(0, 0, 0, 0.01);
     font-size: 0.75rem;
     border: none;
@@ -56,7 +58,7 @@
     width: fit-content;
     border-radius: $border-radius;
     border: 1px solid $primary-dark;
-    padding: 0.1rem 1rem;
+    padding: 0.1rem 1rem 0.3rem 1rem;
     justify-content: space-around;
     gap: 0.5rem;
   }

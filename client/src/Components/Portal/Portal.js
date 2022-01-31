@@ -138,7 +138,7 @@ export default function Portal() {
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
     // typecheck: makes sure that an el rendered is a YMap
-    if (el.constructor.name === "YMap") {
+    if (el instanceof Y.Map) {
       elements[el.get("container")].push(
         <YElement
           key={id}

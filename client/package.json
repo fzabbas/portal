@@ -27,7 +27,8 @@
     "web-vitals": "^2.1.3",
     "y-webrtc": "^10.2.2",
     "y-websocket": "^1.3.18",
-    "yjs": "^13.5.24"
+    "yjs": "^13.5.24",
+    "y-prosemirror": "https://github.com/fzabbas/y-prosemirror.git"
   },
   "scripts": {
     "start": "react-scripts start",

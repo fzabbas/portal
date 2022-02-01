@@ -17,8 +17,8 @@ export default function YElement({
   const onResize = useCallback((width, height) => {
     let elementsMap = yDoc.get("elements");
     let element = elementsMap.get(id);
-    element.set("width", ref.current.clientWidth);
-    element.set("height", ref.current.clientHeight);
+    element.set("width", ref.current.offsetWidth);
+    element.set("height", ref.current.offsetHeight);
   }, []);
 
   const { width, height, ref } = useResizeDetector({

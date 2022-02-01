@@ -17,8 +17,8 @@ export default function YElement({
   const onResize = useCallback((width, height) => {
     let elementsMap = yDoc.get("elements");
     let element = elementsMap.get(id);
-    element.set("width", width);
-    element.set("height", height);
+    element.set("width", ref.current.clientWidth);
+    element.set("height", ref.current.clientHeight);
   }, []);
 
   const { width, height, ref } = useResizeDetector({
@@ -44,8 +44,8 @@ export default function YElement({
           : {
               top: el.get("y_pos"),
               left: el.get("x_pos"),
-              width: el.get("width") + 8,
-              height: el.get("height") + 8,
+              width: el.get("width"),
+              height: el.get("height"),
             }
       }
       className={`element ${el.get("container")}`}

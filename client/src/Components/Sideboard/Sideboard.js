@@ -12,17 +12,17 @@ import linksIcon from "../../assets/icons/links.svg";
 import "./Sideboard.scss";
 
 export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
+  const [showSideboard, setShowSideboard] = useState(false);
   const [toAddImage, setToAddImage] = useState(false);
   const [toAddLink, setToAddLink] = useState(false);
-  const [showSideboard, setShowSideboard] = useState(false);
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const [isValidLink, setIsValidLink] = useState(true);
   const [isValidImageLink, setIsValidImageLink] = useState(true);
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const renderText = () => {
     const id = uuidv4();
-    const map = yDoc.getMap("elements"); // elements meta deta
-    // setting elements meta data, more infor may have to be stored
+    const map = yDoc.getMap("elements");
+    // setting elements meta data,
     const yMapNested = new Y.Map();
     yDoc.transact(() => {
       map.set(id, yMapNested);
@@ -35,6 +35,7 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
     forceUpdate();
   };
 
+  // must start with http:// or https://
   const isValidURL = (string) => {
     let validString = /^https?:\/\/(.*\.)+.+$/;
     return string.match(validString);
@@ -95,6 +96,7 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
         onDrop={(e) => onDrop(e, "toAdd")}
       >
         <div className="sideboard__header">
+          {/* toggle to show sideboard or not */}
           <button
             className="sideboard__button sideboard__toggle-btn"
             onClick={() => setShowSideboard(!showSideboard)}
@@ -105,17 +107,21 @@ export default function Sideboard({ onDragOver, onDrop, elements, yDoc }) {
               alt="minimize"
             />
           </button>
+
           <h2 className="sideboard__heading">Sideboard</h2>
           <div>
+            {/* insert text */}
             <button className="sideboard__button" onClick={renderText}>
               <img src={textIcon} alt="text-icon" />
             </button>
+            {/* insert image */}
             <button
               className="sideboard__button"
               onClick={() => setToAddImage(!toAddImage)}
             >
               <img src={imageIcon} alt="image-icon" />
             </button>
+            {/* insert link */}
             <button
               className="sideboard__button"
               onClick={() => setToAddLink(!toAddLink)}

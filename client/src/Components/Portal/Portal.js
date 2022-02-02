@@ -1,6 +1,5 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
-// import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import debounce from "lodash.debounce";
 import axios from "axios";
@@ -10,20 +9,17 @@ import "./Portal.scss";
 import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
-// const yDoc = new Y.Doc();
-// let provider = new WebrtcProvider("example-document15", yDoc);
 const API_URL = `http://${window.location.hostname}:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
+  const [portalWidth, setPortalWidth] = useState(window.innerWidth);
+  const [portalHeight, setPortalHeight] = useState(window.innerHeight);
   const [yDoc, _setYDoc] = useState(() => new Y.Doc());
   const [provider, _setProvider] = useState(
     () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
   );
-
-  const [portalWidth, setPortalWidth] = useState(window.innerWidth);
-  const [portalHeight, setPortalHeight] = useState(window.innerHeight);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -36,6 +32,8 @@ export default function Portal() {
     let initialX = droppedElementsMap.get("x_pos");
     let initialY = droppedElementsMap.get("y_pos");
     droppedElementsMap.set("container", section);
+
+    // updating yDoc
     // if moving from sideboard
     if (typeof initialX === "string") {
       droppedElementsMap.set("x_pos", e.pageX);
@@ -50,6 +48,8 @@ export default function Portal() {
         initialY + (e.pageY - e.dataTransfer.getData("startY"))
       );
     }
+
+    //updating portal width
     const newWidth =
       droppedElementsMap.get("x_pos") + droppedElementsMap.get("width");
     const newHeight =
@@ -65,6 +65,8 @@ export default function Portal() {
 
   const putToDb = (yDocToPut) => {
     console.log("puttin");
+
+    // converting ydoc to binary data and sendinng through in formData
     const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
@@ -79,17 +81,14 @@ export default function Portal() {
       .put(`${API_URL}/portal/${key}`, formData, config)
       .then((resp) => resp);
   };
+
   const debouncedPut = useCallback(
     debounce((yDocToPut) => putToDb(yDocToPut), 1000),
     []
   );
 
   useEffect(() => {
-    // let provider = new WebrtcProvider(key, yDoc);
-    // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
-    // setInterval(() => {
     axios
-      // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
       .then((resp) => {
         resp.data.arrayBuffer().then((buffer) => {
@@ -98,20 +97,17 @@ export default function Portal() {
         });
       })
       .catch(() => {
-        // TODO make portal name from title? maybe database doesnt even need it?
         makePortal("new portal", key);
       });
-    // }, 1000);
     yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
-      // TODO: comment out for putting
       forceUpdate();
     });
     return () => {
       yDoc.destroy();
     };
   }, []);
-  // forceUpdate();
+
   const removeElement = (e, id) => {
     e.preventDefault();
     yElements.delete(id);
@@ -185,7 +181,6 @@ export default function Portal() {
       </section>
       <Sideboard
         onDragOver={onDragOver}
-        // onDrop={onDrop}
         onDrop={(e) => onDrop(e, "toAdd")}
         elements={elements}
         yDoc={yDoc}

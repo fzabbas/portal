@@ -5,7 +5,7 @@
   flex-grow: 1;
   height: 100vh;
   position: relative;
-  width: 100%; // overflow: hidden;
+  width: 100%;
   &__header {
     @include main-header;
   }

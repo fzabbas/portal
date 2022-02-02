@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
-import { WebrtcProvider } from "y-webrtc";
+// import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import debounce from "lodash.debounce";
 import axios from "axios";
@@ -21,7 +21,6 @@ export default function Portal() {
   const [provider, _setProvider] = useState(
     () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
   );
-  // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
 
   const [portalWidth, setPortalWidth] = useState(window.innerWidth);
   const [portalHeight, setPortalHeight] = useState(window.innerHeight);

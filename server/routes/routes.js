@@ -67,7 +67,6 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
               portal_doc: mergedBuffer,
             });
         })
-        .then(t.commit)
         .catch((err) => {
           t.rollback();
           throw err;

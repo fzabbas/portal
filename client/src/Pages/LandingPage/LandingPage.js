@@ -79,7 +79,6 @@ export default function LandingPage() {
         </form>
       </section>
       <section className="features">
-        {/* <p className="features__heading">Features</p> */}
         <div className="features__videos">
           <div className="features__feature">
             <h3 className="features__subheading--alternate">

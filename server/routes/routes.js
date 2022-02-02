@@ -1,7 +1,7 @@
 // const { response } = require("express");
 const express = require("express");
-const router = express.Router();
 const multer = require("multer");
+const router = express.Router();
 const upload = multer();
 const knex = require("../knexConfig");
 const Y = require("yjs");
@@ -12,7 +12,7 @@ const PORTAL_DOCS = "portalDocs";
 function writePortal(portalID, data) {
   console.log(`Writing ${portalID} to disk`);
   fs.mkdirSync(PORTAL_DOCS, { recursive: true });
-  fs.writeFileSync(`${PORTAL_DOCS}/${portalID}`, data); // put into fn
+  fs.writeFileSync(`${PORTAL_DOCS}/${portalID}`, data);
 }
 
 function readPortal(portalID) {
@@ -54,7 +54,6 @@ router.get("/:key", (req, res) => {
     .select("portal_doc", "portal_name")
     .then((data) => {
       console.log("GET success");
-      // res.send(data[0].portal_doc);
       res.send(readPortal(data[0].portal_name));
     })
     .catch((err) => {
@@ -77,12 +76,7 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
           if (portalId === "new portal") {
             portalId = uuidv4();
             console.log(
-              "renaming old portal",
-              data[0].portal_name,
-              "to",
-              portalId,
-              "key",
-              req.params.key
+              `renaming old portal ${data[0].portal_name} to ${portalId} key: ${req.params.key}`
             );
           }
 
@@ -104,7 +98,6 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
               // update version
               portal_name: portalId,
               version: data[0].version + 1,
-              // portal_doc: mergedBuffer,
             });
         });
     })

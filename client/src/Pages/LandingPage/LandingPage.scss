@@ -1,9 +1,6 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
-.main {
-}
-
 .landing {
   background-color: $secondary-light;
   position: relative;
@@ -30,7 +27,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 2000px;
-    // background-attachment: fixed;
     height: 95vh;
     width: 100%;
     object-fit: cover;
@@ -38,7 +34,6 @@
     align-items: center;
   }
   &__form {
-    // background-color: rgba(255, 255, 255, 0.4);
     padding: 1rem;
     border-radius: 4px;
     margin: auto;

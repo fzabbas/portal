@@ -37,6 +37,7 @@ router.get("/:key", (req, res) => {
 
 // havent tested yet, no way to test at the moment
 router.put("/:key", upload.single("portalDoc"), (req, res) => {
+  console.log("putting", req.params.key);
   knex
     .transaction((t) => {
       return knex("portals")
@@ -46,6 +47,7 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
         })
         .select("portal_doc")
         .then((data) => {
+          console.log("merging put:");
           const mergedDoc = Y.mergeUpdates([
             req.file.buffer,
             data[0].portal_doc,
@@ -66,10 +68,12 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
         });
     })
     .then(() => {
+      console.log("successful put");
       res.send("portal was updates");
     })
     .catch(() => {
       console.log("Portal was not updated");
+      res.status(400).send("Portal was not updated");
     });
 });
 

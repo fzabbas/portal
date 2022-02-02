@@ -46,8 +46,7 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
   console.log("putting", req.params.key);
   knex
     .transaction((t) => {
-      return knex("portals")
-        .transacting(t)
+      return t("portals")
         .where({
           password: req.params.key,
         })
@@ -59,17 +58,13 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
             data[0].portal_doc,
           ]);
           const mergedBuffer = Buffer.from(mergedDoc);
-          return knex("portals")
+          return t("portals")
             .where({
               password: req.params.key,
             })
             .update({
               portal_doc: mergedBuffer,
             });
-        })
-        .catch((err) => {
-          t.rollback();
-          throw err;
         });
     })
     .then(() => {

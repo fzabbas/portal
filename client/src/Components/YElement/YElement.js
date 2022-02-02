@@ -12,7 +12,7 @@ export default function YElement({
   removeElement,
   yDoc,
   forceUpdate,
-  provider,
+  // provider,
 }) {
   const onResize = useCallback((width, height) => {
     let elementsMap = yDoc.get("elements");
@@ -75,7 +75,7 @@ export default function YElement({
           id={id}
           yDoc={yDoc}
           forceupdate={forceUpdate}
-          provider={provider}
+          // provider={provider}
         />
       )}
     </div>

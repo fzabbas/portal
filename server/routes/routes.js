@@ -5,17 +5,31 @@ const multer = require("multer");
 const upload = multer();
 const knex = require("../knexConfig");
 const Y = require("yjs");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const PORTAL_DOCS = "portalDocs";
+
+function writePortal(portalID, data) {
+  fs.mkdirSync(PORTAL_DOCS, { recursive: true });
+  fs.writeFileSync(`${PORTAL_DOCS}/${portalID}`, data); // put into fn
+}
+
+function readPortal(portalID) {
+  return fs.readFileSync(`${PORTAL_DOCS}/${portalID}`);
+}
 
 router.post("/", upload.single("portalDoc"), (req, res) => {
   console.log("POST", req.body.password);
+  const portalID = uuidv4();
   knex("portals")
     .insert({
       portal_doc: req.file.buffer,
-      portal_name: req.body.portalName,
+      portal_name: portalID,
       password: req.body.password,
     })
     .then((data) => {
-      console.log("POST success");
+      console.log("POST success", portalID);
+      writePortal(portalID, req.file.buffer);
       res.send("Portal was successfully created");
     })
     .catch((err) => {
@@ -41,7 +55,6 @@ router.get("/:key", (req, res) => {
     });
 });
 
-// havent tested yet, no way to test at the moment
 router.put("/:key", upload.single("portalDoc"), (req, res) => {
   console.log("putting", req.params.key);
   knex
@@ -50,19 +63,25 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
         .where({
           password: req.params.key,
         })
-        .select("portal_doc")
+        .select("portal_doc", "version", "portal_name")
         .then((data) => {
           console.log("merging put:");
+          // read file from disk
           const mergedDoc = Y.mergeUpdates([
             req.file.buffer,
             data[0].portal_doc,
+            readPortal(data[0].portal_name),
           ]);
+          // write file to disk
           const mergedBuffer = Buffer.from(mergedDoc);
+          writePortal(data[0].portal_name, mergedBuffer);
           return t("portals")
             .where({
               password: req.params.key,
             })
             .update({
+              // update version
+              version: data[0].version + 1,
               portal_doc: mergedBuffer,
             });
         });

@@ -11,6 +11,8 @@ node_modules
 # production
 client/build
 
+server/portalDocs
+
 # misc
 .DS_Store
 .env.local

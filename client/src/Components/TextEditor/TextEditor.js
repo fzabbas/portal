@@ -28,7 +28,7 @@ export default function TextEditor({
   placehoderText,
   className,
   isHeading,
-  provider,
+  // provider,
 }) {
   const [menuHover, setMenuHover] = useState(false);
   const [colorHover, setColorHover] = useState(false);
@@ -44,19 +44,19 @@ export default function TextEditor({
         italic: true,
         listItem: true,
       }),
-      Collaboration.configure({
-        document: yDoc,
-        field: `textEditor-${id}`,
-      }),
-      CollaborationCursor.configure({
-        provider,
-        user: {
-          name: "  ",
-          color: `#${((Math.random() * 0xffffff) << 0)
-            .toString(16)
-            .padStart(6, "0")}`,
-        },
-      }),
+      // Collaboration.configure({
+      //   document: yDoc,
+      //   field: `textEditor-${id}`,
+      // }),
+      // CollaborationCursor.configure({
+      //   provider,
+      //   user: {
+      //     name: "  ",
+      //     color: `#${((Math.random() * 0xffffff) << 0)
+      //       .toString(16)
+      //       .padStart(6, "0")}`,
+      //   },
+      // }),
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",
       }),

@@ -17,7 +17,12 @@ function writePortal(portalID, data) {
 
 function readPortal(portalID) {
   console.log(`Reading ${portalID} from disk`);
-  return fs.readFileSync(`${PORTAL_DOCS}/${portalID}`);
+  try {
+    return fs.readFileSync(`${PORTAL_DOCS}/${portalID}`);
+  } catch (err) {
+    console.log(`Portal ${portalID} doesn't exist`);
+    return Y.encodeStateAsUpdate(new Y.Doc());
+  }
 }
 
 router.post("/", upload.single("portalDoc"), (req, res) => {
@@ -68,22 +73,36 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
         })
         .select("portal_doc", "version", "portal_name")
         .then((data) => {
+          let portalId = data[0].portal_name;
+          if (portalId === "new portal") {
+            portalId = uuidv4();
+            console.log(
+              "renaming old portal",
+              data[0].portal_name,
+              "to",
+              portalId,
+              "key",
+              req.params.key
+            );
+          }
+
           console.log("merging put:");
           // read file from disk
           const mergedDoc = Y.mergeUpdates([
             req.file.buffer,
             data[0].portal_doc,
-            readPortal(data[0].portal_name),
+            readPortal(portalId),
           ]);
           // write file to disk
           const mergedBuffer = Buffer.from(mergedDoc);
-          writePortal(data[0].portal_name, mergedBuffer);
+          writePortal(portalId, mergedBuffer);
           return t("portals")
             .where({
               password: req.params.key,
             })
             .update({
               // update version
+              portal_name: portalId,
               version: data[0].version + 1,
               // portal_doc: mergedBuffer,
             });

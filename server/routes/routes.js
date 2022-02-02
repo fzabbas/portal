@@ -10,11 +10,13 @@ const fs = require("fs");
 const PORTAL_DOCS = "portalDocs";
 
 function writePortal(portalID, data) {
+  console.log(`Writing ${portalID} to disk`);
   fs.mkdirSync(PORTAL_DOCS, { recursive: true });
   fs.writeFileSync(`${PORTAL_DOCS}/${portalID}`, data); // put into fn
 }
 
 function readPortal(portalID) {
+  console.log(`Reading ${portalID} from disk`);
   return fs.readFileSync(`${PORTAL_DOCS}/${portalID}`);
 }
 
@@ -44,10 +46,11 @@ router.get("/:key", (req, res) => {
     .where({
       password: req.params.key,
     })
-    .select("portal_doc")
+    .select("portal_doc", "portal_name")
     .then((data) => {
       console.log("GET success");
-      res.send(data[0].portal_doc);
+      // res.send(data[0].portal_doc);
+      res.send(readPortal(data[0].portal_name));
     })
     .catch((err) => {
       console.log("GET failed", err);
@@ -82,7 +85,7 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
             .update({
               // update version
               version: data[0].version + 1,
-              portal_doc: mergedBuffer,
+              // portal_doc: mergedBuffer,
             });
         });
     })

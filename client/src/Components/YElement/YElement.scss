@@ -5,7 +5,7 @@
   background-color: rgba(0, 0, 0, 0.1);
   position: relative;
   max-height: 7rem;
-
+  min-height: 3rem;
   max-width: 11rem;
 }
 
@@ -21,10 +21,6 @@
   }
 }
 
-.toAdd {
-  min-height: 3rem;
-}
-
 .element {
   padding: 4px;
   overflow: hidden;
@@ -33,7 +29,6 @@
     resize: both;
   }
   &__delete {
-    // display: none;
     visibility: hidden;
     position: absolute;
     top: 0.1rem;

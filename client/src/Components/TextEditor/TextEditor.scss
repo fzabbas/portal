@@ -3,8 +3,9 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
+//ProseMirro and collaboration styling is adapted from TipTap
 .ProseMirror p.is-editor-empty:first-child::before {
-  color: #adb5bd;
+  color: $secondary-dark;
   content: attr(data-placeholder);
   float: left;
   height: 0;
@@ -51,7 +52,6 @@
 .menu {
   display: flex;
   gap: 2px;
-  // padding-top: 0.5rem;
   padding-left: 1rem;
   &__btn {
     @include button-icon;

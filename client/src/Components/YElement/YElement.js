@@ -1,10 +1,10 @@
 import { useResizeDetector } from "react-resize-detector";
+import { useCallback } from "react";
 
 import TextEditor from "../TextEditor/TextEditor";
 import deleteIcon from "../../assets/icons/delete.svg";
 import linksIcon from "../../assets/icons/links-line.svg";
 import "./YElement.scss";
-import { useCallback } from "react";
 
 export default function YElement({
   id,
@@ -14,24 +14,24 @@ export default function YElement({
   forceUpdate,
   provider,
 }) {
-  const onResize = useCallback((width, height) => {
+  const onResize = useCallback(() => {
     let elementsMap = yDoc.get("elements");
     let element = elementsMap.get(id);
     element.set("width", ref.current.offsetWidth);
     element.set("height", ref.current.offsetHeight);
   }, []);
 
-  const { width, height, ref } = useResizeDetector({
-    refreshMode: "debounce",
-    refreshRate: 25,
-    onResize,
-  });
-
   const onDragStart = (e, key) => {
     e.dataTransfer.setData("startX", e.pageX);
     e.dataTransfer.setData("startY", e.pageY);
     e.dataTransfer.setData("id", key);
   };
+
+  const { _width, _height, ref } = useResizeDetector({
+    refreshMode: "debounce",
+    refreshRate: 25,
+    onResize,
+  });
 
   return (
     <div
@@ -57,6 +57,7 @@ export default function YElement({
           alt="delete icon"
         />
       </button>
+      {/* creates image or link */}
       {el.get("src") ? (
         el.get("hrefName") ? (
           <a className="element__link" href={el.get("src")} target={"_blank"}>
@@ -71,6 +72,7 @@ export default function YElement({
           />
         )
       ) : (
+        // creates text element
         <TextEditor
           id={id}
           yDoc={yDoc}

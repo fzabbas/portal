@@ -27,7 +27,7 @@
 
 .element {
   padding: 4px;
-  overflow: auto;
+  overflow: hidden;
   width: 11rem;
   &:hover {
     resize: both;

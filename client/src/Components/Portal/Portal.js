@@ -18,10 +18,9 @@ export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
   const [yDoc, _setYDoc] = useState(() => new Y.Doc());
-  // const [provider, _setProvider] = useState(
-  // () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
-  // );
-  // let provider = new WebsocketProvider("ws://inportal.space:1234", key, yDoc);
+  const [provider, _setProvider] = useState(
+    () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
+  );
 
   const [portalWidth, setPortalWidth] = useState(window.innerWidth);
   const [portalHeight, setPortalHeight] = useState(window.innerHeight);
@@ -151,7 +150,7 @@ export default function Portal() {
           removeElement={removeElement}
           yDoc={yDoc}
           forceUpdate={forceUpdate}
-          // provider={provider}
+          provider={provider}
         />
       );
     }
@@ -169,7 +168,7 @@ export default function Portal() {
           yDoc={yDoc}
           placehoderText={"Add title"}
           isHeading={true}
-          // provider={provider}
+          provider={provider}
         />
       </header>
       <section

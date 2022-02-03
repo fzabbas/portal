@@ -1,6 +1,6 @@
-import { useEffect, useReducer, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { WebrtcProvider } from "y-webrtc";
+import { useState, useEffect, useReducer, useCallback } from "react";
+import { useParams, Link } from "react-router-dom";
+import { WebsocketProvider } from "y-websocket";
 import debounce from "lodash.debounce";
 import axios from "axios";
 import * as Y from "yjs";
@@ -9,13 +9,17 @@ import "./Portal.scss";
 import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
-const yDoc = new Y.Doc();
-let provider = new WebrtcProvider("example-dxocument23", yDoc);
-const API_URL = `http://localhost:8080`;
+const API_URL = `http://${window.location.hostname}:8080`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   let { key } = useParams();
+  const [portalWidth, setPortalWidth] = useState(window.innerWidth);
+  const [portalHeight, setPortalHeight] = useState(window.innerHeight);
+  const [yDoc, _setYDoc] = useState(() => new Y.Doc());
+  const [provider, _setProvider] = useState(
+    () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
+  );
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -24,28 +28,45 @@ export default function Portal() {
   const onDrop = (e, section) => {
     let id = e.dataTransfer.getData("id");
     let elementsMap = yDoc.getMap("elements");
-    let nestedElementsMap = elementsMap.get(id);
-    let initialX = nestedElementsMap.get("x_pos");
-    let initialY = nestedElementsMap.get("y_pos");
-    nestedElementsMap.set("container", section);
+    let droppedElementsMap = elementsMap.get(id);
+    let initialX = droppedElementsMap.get("x_pos");
+    let initialY = droppedElementsMap.get("y_pos");
+    droppedElementsMap.set("container", section);
+
+    // updating yDoc
+    // if moving from sideboard
     if (typeof initialX === "string") {
-      nestedElementsMap.set("x_pos", e.pageX);
-      nestedElementsMap.set("y_pos", e.pageY);
+      droppedElementsMap.set("x_pos", e.pageX);
+      droppedElementsMap.set("y_pos", e.pageY);
     } else {
-      nestedElementsMap.set(
+      droppedElementsMap.set(
         "x_pos",
         initialX + (e.pageX - e.dataTransfer.getData("startX"))
       );
-      nestedElementsMap.set(
+      droppedElementsMap.set(
         "y_pos",
         initialY + (e.pageY - e.dataTransfer.getData("startY"))
       );
     }
+
+    //updating portal width
+    const newWidth =
+      droppedElementsMap.get("x_pos") + droppedElementsMap.get("width");
+    const newHeight =
+      droppedElementsMap.get("y_pos") + droppedElementsMap.get("height");
+    newWidth > window.innerWidth
+      ? setPortalWidth(newWidth)
+      : setPortalWidth(window.innerWidth);
+    newHeight > window.innerHeight
+      ? setPortalHeight(newHeight)
+      : setPortalHeight(window.innerHeight);
     forceUpdate();
   };
 
   const putToDb = (yDocToPut) => {
     console.log("puttin");
+
+    // converting ydoc to binary data and sendinng through in formData
     const yDocByte = Y.encodeStateAsUpdate(yDocToPut);
     const yDocBlob = new Blob([yDocByte]);
     let formData = new FormData();
@@ -60,14 +81,14 @@ export default function Portal() {
       .put(`${API_URL}/portal/${key}`, formData, config)
       .then((resp) => resp);
   };
+
   const debouncedPut = useCallback(
-    debounce((yDocToPut) => putToDb(yDocToPut), 2000),
+    debounce((yDocToPut) => putToDb(yDocToPut), 1000),
     []
   );
 
   useEffect(() => {
     axios
-      // other type could be arrayBuffer
       .get(`${API_URL}/portal/${key}`, { responseType: "blob" })
       .then((resp) => {
         resp.data.arrayBuffer().then((buffer) => {
@@ -76,15 +97,15 @@ export default function Portal() {
         });
       })
       .catch(() => {
-        // TODO make portal name from title? maybe database doesnt even need it?
         makePortal("new portal", key);
-        // console.log("A portal with that key does not exist");
       });
     yDoc.on("afterTransaction", () => {
       debouncedPut(yDoc);
-      // TODO: comment out for putting
       forceUpdate();
     });
+    return () => {
+      yDoc.destroy();
+    };
   }, []);
 
   const removeElement = (e, id) => {
@@ -115,7 +136,8 @@ export default function Portal() {
   };
   let yElements = yDoc.getMap("elements");
   yElements.forEach((el, id) => {
-    if (el) {
+    // typecheck: makes sure that an el rendered is a YMap
+    if (el instanceof Y.Map) {
       elements[el.get("container")].push(
         <YElement
           key={id}
@@ -124,6 +146,7 @@ export default function Portal() {
           removeElement={removeElement}
           yDoc={yDoc}
           forceUpdate={forceUpdate}
+          provider={provider}
         />
       );
     }
@@ -132,16 +155,22 @@ export default function Portal() {
   return (
     <main className="portal-page">
       <header className="portal__header">
-        <h1 className="portal__heading">Portal /</h1>
+        <Link className="portal__heading" to="/">
+          Portal /
+        </Link>
         <TextEditor
           className="portal__subheading"
           id={key}
           yDoc={yDoc}
           placehoderText={"Add title"}
           isHeading={true}
+          provider={provider}
         />
       </header>
-      <section className="portal">
+      <section
+        className="portal"
+        style={{ width: portalWidth, height: portalHeight }}
+      >
         <div
           className="in-portal"
           onDragOver={onDragOver}
@@ -152,7 +181,7 @@ export default function Portal() {
       </section>
       <Sideboard
         onDragOver={onDragOver}
-        onDrop={onDrop}
+        onDrop={(e) => onDrop(e, "toAdd")}
         elements={elements}
         yDoc={yDoc}
       />

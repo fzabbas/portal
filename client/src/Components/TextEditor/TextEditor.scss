@@ -3,8 +3,9 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
+//ProseMirro and collaboration styling is adapted from TipTap
 .ProseMirror p.is-editor-empty:first-child::before {
-  color: #adb5bd;
+  color: $secondary-dark;
   content: attr(data-placeholder);
   float: left;
   height: 0;
@@ -18,13 +19,40 @@
 }
 
 .ProseMirror {
+  margin: 0.75rem;
   padding: 0.25rem;
+}
+
+/* Give a remote user a caret */
+.collaboration-cursor__caret {
+  border-left: 1px solid #0d0d0d;
+  border-right: 1px solid #0d0d0d;
+  margin-left: -1px;
+  margin-right: -1px;
+  pointer-events: none;
+  position: relative;
+  word-break: normal;
+}
+/* Render the username above the caret */
+.collaboration-cursor__label {
+  border-radius: 3px 3px 3px 0;
+  color: #0d0d0d;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  left: -1px;
+  line-height: normal;
+  padding: 0rem 0rem;
+  position: absolute;
+  top: 0;
+  user-select: none;
+  white-space: nowrap;
 }
 
 .menu {
   display: flex;
   gap: 2px;
-  padding-top: 0.5rem;
+  padding-left: 1rem;
   &__btn {
     @include button-icon;
 
@@ -34,11 +62,6 @@
         brightness(101%) contrast(81%);
     }
   }
-}
-
-.menu--heading .menu__btn {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(33deg)
-    brightness(107%) contrast(101%);
 }
 
 .icon {
@@ -51,8 +74,5 @@
     padding: 0;
     background-color: inherit;
     border-color: black;
-  }
-  &--heading {
-    border-color: white;
   }
 }

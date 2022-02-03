@@ -16,15 +16,17 @@ h3 {
 
 p {
   margin: 0;
+  font-size: 0.9rem;
 }
 
 a {
   text-decoration: none;
+  color: $primary-dark;
 }
 
 /* general body styles */
 body {
   font-family: "Source Sans Pro";
   margin: 0;
-  // background-color: $primary-background;
+  color: $primary-dark;
 }

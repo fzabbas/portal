@@ -1,0 +1,174 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.landing {
+  background-color: $secondary-light;
+  position: relative;
+  &__header {
+    background-color: $secondary-light;
+    @include main-header;
+    width: 100%;
+    position: absolute;
+    @include breakpoint-small {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  &__heading {
+    @include main-heading;
+    font-weight: 400;
+  }
+  &__subheading {
+    @include subheading;
+    font-weight: 400;
+  }
+  &__hero-image {
+    background-image: url("../../assets/images/hero2.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 2000px;
+    height: 95vh;
+    width: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+  }
+  &__form {
+    padding: 1rem;
+    border-radius: 4px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 14rem;
+    gap: 0.5rem;
+  }
+  &__input {
+    border: 1px solid $landing-main;
+    padding: 0.5rem 0.25rem;
+    outline: none;
+    border-radius: $border-radius;
+  }
+  &__prompt {
+    color: $secondary-dark;
+  }
+  &__newkey {
+    color: $secondary-dark;
+  }
+
+  &__button {
+    background-color: $landing-main;
+    border-radius: $border-radius;
+    border: none;
+    padding: 0.5rem 0.25rem;
+  }
+  &__newportal {
+    align-self: center;
+    background-color: $secondary-dark-transparent;
+    padding: 0.25rem;
+    border-radius: $border-radius;
+    width: fit-content;
+  }
+}
+
+.features {
+  padding: 4rem;
+  background-color: $primary-light;
+  @include breakpoint-small {
+    padding: 1rem;
+  }
+  &__heading {
+    @include main-heading;
+    padding-bottom: 2rem;
+  }
+  &__subheading {
+    @include subheading;
+    padding-bottom: 1rem;
+    @include breakpoint-large {
+      display: none;
+    }
+
+    &--alternate {
+      @include subheading;
+      display: none;
+      @include breakpoint-large {
+        display: block;
+        align-self: flex-start;
+        order: -2;
+      }
+    }
+    &--center {
+      @include subheading;
+    }
+  }
+
+  &__text {
+    padding-bottom: 1rem;
+  }
+  &__text-bold {
+    font-weight: 600;
+  }
+  &__videos {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+
+    @include breakpoint-medium {
+      gap: 2rem;
+    }
+    @include breakpoint-small {
+      gap: 1rem;
+    }
+  }
+
+  &__video {
+    @include breakpoint-medium {
+      order: -1;
+    }
+  }
+  &__content {
+    width: 50%;
+    @include breakpoint-large {
+      width: 70%;
+    }
+    @include breakpoint-medium {
+      width: 100%;
+    }
+  }
+
+  &__feature {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    @include breakpoint-large {
+      flex-direction: column;
+      align-items: center;
+    }
+    @include breakpoint-medium {
+      gap: 2rem;
+    }
+    @include breakpoint-small {
+      gap: 1rem;
+    }
+  }
+}
+
+.secret {
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.footer {
+  display: flex;
+  gap: 2rem;
+  background-color: white;
+  padding: 1rem;
+  justify-content: center;
+  &__icon {
+    width: 2rem;
+  }
+}

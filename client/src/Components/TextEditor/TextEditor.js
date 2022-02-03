@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Collaboration from "@tiptap/extension-collaboration";
+import CollaborationCursor from "@tiptap/extension-collaboration-cursor";
 import Placeholder from "@tiptap/extension-placeholder";
 import "./TextEditor.scss";
 
@@ -27,6 +28,7 @@ export default function TextEditor({
   placehoderText,
   className,
   isHeading,
+  provider,
 }) {
   const [menuHover, setMenuHover] = useState(false);
   const [colorHover, setColorHover] = useState(false);
@@ -46,6 +48,15 @@ export default function TextEditor({
         document: yDoc,
         field: `textEditor-${id}`,
       }),
+      CollaborationCursor.configure({
+        provider,
+        user: {
+          name: "  ",
+          color: `#${((Math.random() * 0xffffff) << 0)
+            .toString(16)
+            .padStart(6, "0")}`,
+        },
+      }),
       Placeholder.configure({
         placeholder: placehoderText || "Add text...",
       }),
@@ -61,8 +72,6 @@ export default function TextEditor({
     editor.setEditable(true);
   };
 
-  // editor.setEditable(editor.isFocused || menuHover);
-
   const removeEditable = (e) => {
     if (!menuHover) editor.setEditable(false);
   };
@@ -75,26 +84,24 @@ export default function TextEditor({
         editor={editor}
       />
       {editor && (editor.isFocused || menuHover || colorHover) ? (
-        // {editor ? (
         <div
-          className={isHeading ? "menu menu--heading" : "menu"}
+          className="menu"
           onMouseEnter={() => setMenuHover(true)}
           onMouseLeave={() => setMenuHover(false)}
         >
+          {/* color button */}
           <input
             onFocus={() => setColorHover(true)}
             onBlur={() => setColorHover(false)}
             type="color"
-            // style={{ color: "#000000" }}
-            className={
-              isHeading ? "icon icon--color icon--heading" : "icon icon--color"
-            }
-            // className="icon icon--color"
+            className={"icon icon--color"}
             onInput={(event) =>
               editor.chain().focus().setColor(event.target.value).run()
             }
             value={editor.getAttributes("textStyle").color || "#000000"}
           />
+
+          {/* italic button */}
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}
             className={
@@ -103,6 +110,8 @@ export default function TextEditor({
           >
             <img className="icon" src={italicIcon} alt="bold icon" />
           </button>
+
+          {/* Bold button */}
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
             className={
@@ -112,6 +121,7 @@ export default function TextEditor({
             <img className="icon" src={boldIcon} alt="bold icon" />
           </button>
 
+          {/* Heading 1 */}
           <button
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -125,6 +135,7 @@ export default function TextEditor({
             <img className="icon" src={h1Icon} alt="heading-1 icon" />
           </button>
 
+          {/* Headin 2 */}
           <button
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -137,6 +148,8 @@ export default function TextEditor({
           >
             <img className="icon" src={h2Icon} alt="heading-2 icon" />
           </button>
+
+          {/* Heading 3 */}
           <button
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
@@ -150,6 +163,7 @@ export default function TextEditor({
             <img className="icon" src={h3Icon} alt="heading-3 icon" />
           </button>
 
+          {/* Bullet Lsit */}
           <button
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={
@@ -159,6 +173,7 @@ export default function TextEditor({
             <img className="icon" src={listIcon} alt="list icon" />
           </button>
 
+          {/* Code block */}
           <button
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             className={
@@ -168,6 +183,7 @@ export default function TextEditor({
             <img className="icon" src={codeIcon} alt="list icon" />
           </button>
 
+          {/* Highlight Text */}
           <button
             onClick={() => editor.chain().focus().toggleHighlight().run()}
             className={
@@ -184,11 +200,6 @@ export default function TextEditor({
       ) : (
         <></>
       )}
-      {/* <EditorContent
-        onBlur={removeEditable}
-        onClick={handleClick}
-        editor={editor}
-      /> */}
     </div>
   );
 }

@@ -7,6 +7,7 @@
   &__header {
     background-color: $secondary-light;
     @include main-header;
+    border-radius: 0px;
     width: 100%;
     position: absolute;
     @include breakpoint-small {
@@ -23,7 +24,7 @@
     font-weight: 400;
   }
   &__hero-image {
-    background-image: url("../../assets/images/hero2.svg");
+    background-image: url("../../assets/images/portal-main-spiral.svg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: 2000px;

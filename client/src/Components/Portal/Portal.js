@@ -9,7 +9,8 @@ import "./Portal.scss";
 import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
-const API_URL = `http://${window.location.hostname}:8080`;
+// const API_URL = `http://${window.location.hostname}:8080`;
+const API_URL = `http://${window.location.hostname}/api`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);

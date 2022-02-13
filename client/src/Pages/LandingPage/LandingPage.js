@@ -11,7 +11,7 @@ import githubIcon from "../../assets/icons/github.svg";
 import mailIcon from "../../assets/icons/mail.svg";
 
 // const API_URL = `http://${window.location.hostname}:8080`;
-const API_URL = `http://${window.location.hostname}/api`;
+const API_URL = `${window.location.origin}/api`;
 
 export default function LandingPage() {
   const [redirect, setRedirect] = useState(null);

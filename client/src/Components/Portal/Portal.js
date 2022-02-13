@@ -9,7 +9,8 @@ import "./Portal.scss";
 import Sideboard from "../Sideboard/Sideboard";
 import YElement from "../YElement/YElement";
 
-const API_URL = `http://${window.location.hostname}:8080`;
+// const API_URL = `http://${window.location.hostname}:8080`;
+const API_URL = `${window.location.origin}/api`;
 
 export default function Portal() {
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -18,7 +19,7 @@ export default function Portal() {
   const [portalHeight, setPortalHeight] = useState(window.innerHeight);
   const [yDoc, _setYDoc] = useState(() => new Y.Doc());
   const [provider, _setProvider] = useState(
-    () => new WebsocketProvider("ws://inportal.space:1234", key, yDoc)
+    () => new WebsocketProvider("wss://websocket.inportal.space", key, yDoc)
   );
 
   const onDragOver = (e) => {

@@ -30,7 +30,7 @@ router.post("/", upload.single("portalDoc"), (req, res) => {
   const portalID = uuidv4();
   knex("portals")
     .insert({
-      portal_doc: req.file.buffer,
+      // portal_doc: req.file.buffer,
       portal_name: portalID,
       password: req.body.password,
     })
@@ -51,7 +51,8 @@ router.get("/:key", (req, res) => {
     .where({
       password: req.params.key,
     })
-    .select("portal_doc", "portal_name")
+    .select("portal_name")
+    // .select("portal_doc", "portal_name")
     .then((data) => {
       console.log("GET success");
       res.send(readPortal(data[0].portal_name));
@@ -66,40 +67,43 @@ router.put("/:key", upload.single("portalDoc"), (req, res) => {
   console.log("putting", req.params.key);
   knex
     .transaction((t) => {
-      return t("portals")
-        .where({
-          password: req.params.key,
-        })
-        .select("portal_doc", "version", "portal_name")
-        .then((data) => {
-          let portalId = data[0].portal_name;
-          if (portalId === "new portal") {
-            portalId = uuidv4();
-            console.log(
-              `renaming old portal ${data[0].portal_name} to ${portalId} key: ${req.params.key}`
-            );
-          }
+      return (
+        t("portals")
+          .where({
+            password: req.params.key,
+          })
+          .select("version", "portal_name")
+          // .select("portal_doc", "version", "portal_name")
+          .then((data) => {
+            let portalId = data[0].portal_name;
+            if (portalId === "new portal") {
+              portalId = uuidv4();
+              console.log(
+                `renaming old portal ${data[0].portal_name} to ${portalId} key: ${req.params.key}`
+              );
+            }
 
-          console.log("merging put:");
-          // read file from disk
-          const mergedDoc = Y.mergeUpdates([
-            req.file.buffer,
-            data[0].portal_doc,
-            readPortal(portalId),
-          ]);
-          // write file to disk
-          const mergedBuffer = Buffer.from(mergedDoc);
-          writePortal(portalId, mergedBuffer);
-          return t("portals")
-            .where({
-              password: req.params.key,
-            })
-            .update({
-              // update version
-              portal_name: portalId,
-              version: data[0].version + 1,
-            });
-        });
+            console.log("merging put:");
+            // read file from disk
+            const mergedDoc = Y.mergeUpdates([
+              req.file.buffer,
+              // data[0].portal_doc,
+              readPortal(portalId),
+            ]);
+            // write file to disk
+            const mergedBuffer = Buffer.from(mergedDoc);
+            writePortal(portalId, mergedBuffer);
+            return t("portals")
+              .where({
+                password: req.params.key,
+              })
+              .update({
+                // update version
+                portal_name: portalId,
+                version: data[0].version + 1,
+              });
+          })
+      );
     })
     .then(() => {
       console.log("successful put");
